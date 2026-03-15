@@ -10,13 +10,11 @@ int execute_command(const char *command)
     {
         return handle_update();
     }
-
-    if (strcmp(command, "clean") == 0)
+    else if (strcmp(command, "clean") == 0)
     {
         return handle_clean();
     }
-
-    if (strcmp(command, "ls") == 0)
+    else if (strcmp(command, "ls") == 0)
     {
         return handle_ls();
     }

@@ -1,12 +1,29 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 
 #include "system_ops.h"
 #include "ui.h"
 
+
+
 int handle_update(void)
 {
+
+    char command[300];
+
     print_mode("update");
-    printf("sudo apt update && sudo apt upgrade -y\n");
+    print_status("Starting system update...", 0);
+    strcpy(command, "sudo apt update && sudo apt upgrade -y");
+    int result = system(command);
+    if (result != 0)
+    {
+        print_status("System update failed.\n", 1);
+        return 1;
+    }
+
+    print_status("System update completed.\n", 0);
     return 0;
 }
 
@@ -21,3 +38,5 @@ int handle_ls(void)
     print_mode("ls");
     return 0;
 }
+
+
