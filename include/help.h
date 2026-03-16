@@ -1,7 +1,8 @@
 #ifndef HELP_H
 #define HELP_H
 
-void print_help(void);
+int print_help(void);
+int version(void);
 
 
 #endif

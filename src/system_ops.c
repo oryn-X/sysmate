@@ -5,7 +5,7 @@
 #include "system_ops.h"
 #include "ui.h"
 
-// this is for update command
+// this is for update command START
 int handle_update(void)
 {
 
@@ -23,6 +23,8 @@ int handle_update(void)
     print_status("System update completed.\n", 0);
     return 0;
 }
+
+// this is for update command END
 
 int handle_clean(void)
 {

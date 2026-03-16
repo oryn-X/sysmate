@@ -7,11 +7,11 @@
 
 int execute_command(const char *command)
 {
-    if (strcmp(command, "update") == 0)
+    if (strcmp(command, "-u") == 0 || strcmp(command, "update") == 0)
     {
         return handle_update();
     }
-    else if (strcmp(command, "clean") == 0)
+    else if (strcmp(command, "-c") == 0 || strcmp(command, "clean") == 0)
     {
         return handle_clean();
     }
@@ -19,16 +19,15 @@ int execute_command(const char *command)
     {
         return handle_ls();
     }
-    // 
-    else if (strcmp(command, "--help") == 0)
+    //
+    else if (strcmp(command, "help") == 0 || strcmp(command, "-h") == 0)
     {
-        print_help();
-        return 0;
-    }else if (strcmp(command, "--ver") == 0)
-    {
-        
+        return print_help();
     }
-    
+    else if (strcmp(command, "version") == 0 || strcmp(command, "-v") == 0)
+    {
+       return version();
+    }
 
     print_unknown_command(command);
     return 1;
