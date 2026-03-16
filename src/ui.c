@@ -2,10 +2,17 @@
 
 #include "ui.h"
 
+#define C_RESET   "\033[0m"
+#define C_RED    "\033[38;5;196m"
+#define C_GREEN   "\033[1;32m"
+#define C_BPURPLE  "\033[1;35m"
+
 void print_usage(void)
 {
   
-    printf(" sysmate --help \n");
+
+    printf("Try:\n");
+    printf("  sysmate --help \n");
     printf("  sysmate --version\n");
 
 }
@@ -13,7 +20,7 @@ void print_usage(void)
 void print_mode(const char *mode)
 {
 
-    printf("\033[38;5;82m[OK]%s\033[0m Mode: \n", mode);
+    printf(C_BPURPLE "[OK] Mode: %s\n" C_RESET, mode);
 }
 
 void print_status(const char *status, int is_erorr)
@@ -21,11 +28,13 @@ void print_status(const char *status, int is_erorr)
 
     if (is_erorr == 0)
     {
-        printf("\033[38;5;82m%s\033[0m\n", status);
+        // successfully = 0
+        printf(C_GREEN "%s\033[0m\n", status);
     }
     else if (is_erorr == 1)
     {
-        printf("\033[38;5;196m%s \033[0m\n", status);
+        // Erorr = 1
+        printf(C_RED "%s\n" C_RESET, status);
     }
 }
 
