@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <dirent.h>
 
 #include "system_ops.h"
 #include "ui.h"
@@ -71,5 +72,6 @@ int handle_clean(void)
 int handle_ls(void)
 {
     print_mode("ls");
+
     return 0;
 }
