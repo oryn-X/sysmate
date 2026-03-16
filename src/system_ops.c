@@ -2,12 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 #include "system_ops.h"
 #include "ui.h"
 
-
-
+// this is for update command
 int handle_update(void)
 {
 
@@ -38,5 +36,3 @@ int handle_ls(void)
     print_mode("ls");
     return 0;
 }
-
-

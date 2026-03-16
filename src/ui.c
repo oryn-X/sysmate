@@ -12,7 +12,7 @@ void print_usage(void)
 
 void print_mode(const char *mode)
 {
-    printf("\033[38;5;82m[OK]\033[0m Mode: %s\n", mode);
+    printf("\033[38;5;82m[OK]%s\033[0m Mode: \n", mode);
 }
 
 void print_status(const char *status, int is_erorr)
