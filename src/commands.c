@@ -1,9 +1,11 @@
 #include <string.h>
+#include <stdio.h>
 
 #include "commands.h"
 #include "help.h"
 #include "system_ops.h"
 #include "ui.h"
+
 
 int execute_command(const char *command)
 {
@@ -19,7 +21,7 @@ int execute_command(const char *command)
     {
         return handle_ls();
     }
-    //
+    
     else if (strcmp(command, "help") == 0 || strcmp(command, "-h") == 0)
     {
         return print_help();

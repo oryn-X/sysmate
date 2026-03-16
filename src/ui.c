@@ -3,10 +3,7 @@
 #include "ui.h"
 
 /* Colors */
-#define C_RESET "\033[0m"
-#define C_RED "\033[38;5;196m"
-#define C_GREEN "\033[1;32m"
-#define C_BPURPLE "\033[1;35m"
+
 
 void print_usage(void)
 {

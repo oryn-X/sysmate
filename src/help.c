@@ -1,12 +1,10 @@
 #include <stdio.h>
+#include "ui.h"
 #define VERSION 1.0
 /* Colors */
-#define C_RESET "\033[0m"
-#define C_CYAN "\033[1;36m"
-#define C_GREEN "\033[1;32m"
-#define C_YELLOW "\033[1;33m"
-#define C_WHITE "\033[1;37m"
 
+
+// help
 int print_help(void)
 {
     printf("\033[2J\033[H");
@@ -48,7 +46,7 @@ int print_help(void)
 
     return 0;
 }
-
+// sysmate version
 int version(void)
 {
     printf("sysmate version %0.1f\n", VERSION);
