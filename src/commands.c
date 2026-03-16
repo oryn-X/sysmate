@@ -1,6 +1,7 @@
 #include <string.h>
 
 #include "commands.h"
+#include "help.h"
 #include "system_ops.h"
 #include "ui.h"
 
@@ -18,6 +19,16 @@ int execute_command(const char *command)
     {
         return handle_ls();
     }
+    // 
+    else if (strcmp(command, "--help") == 0)
+    {
+        print_help();
+        return 0;
+    }else if (strcmp(command, "--ver") == 0)
+    {
+        
+    }
+    
 
     print_unknown_command(command);
     return 1;

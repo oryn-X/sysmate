@@ -4,10 +4,10 @@
 
 void print_usage(void)
 {
-    printf("Usage:\n");
-    printf("  sysmate update\n");
-    printf("  sysmate clean\n");
-    printf("  sysmate ls\n");
+  
+    printf(" sysmate --help \n");
+    printf("  sysmate --version\n");
+
 }
 
 void print_mode(const char *mode)

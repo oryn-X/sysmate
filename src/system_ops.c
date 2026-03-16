@@ -6,15 +6,13 @@
 #include "ui.h"
 
 // this is for update command
-// this is for update command
 int handle_update(void)
 {
 
     char command[300];
-
     print_mode("update");
     print_status("Starting system update...", 0);
-    strcpy(command, "sudo apt update && sudo apt upgrade -y");
+    strcpy(command, "sudo apt update && sudo apt full-upgrade -y");
     int result = system(command);
     if (result != 0)
     {
