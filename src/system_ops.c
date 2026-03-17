@@ -95,11 +95,7 @@ int handle_clean(void)
 int handle_ls(void)
 {
     print_mode("ls");
-
     DIR *dir = opendir(".");
-
-    DIR *dir = opendir(".");
-
     struct dirent *entry;
     int index = 1;
     if (dir == NULL)
