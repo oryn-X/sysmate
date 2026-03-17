@@ -8,8 +8,8 @@
 void print_usage(void)
 {
     printf("Try:\n");
-    printf("  sysmate --help \n");
-    printf("  sysmate --version\n");
+    printf("  sysmate help or sysmate -h\n");
+    printf("  sysmate version or sysmate -v\n");
 }
 
 void print_mode(const char *mode)
@@ -31,8 +31,8 @@ void print_status(const char *status, int is_erorr)
     }
 }
 
-void print_unknown_command(const char *command)
+void print_unknown_command(const char *com)
 {
-    printf("Unknown command: %s\n", command);
+    printf("Unknown command: %s\n",com);
     print_usage();
 }

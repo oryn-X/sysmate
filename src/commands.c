@@ -7,30 +7,34 @@
 #include "ui.h"
 
 
-int execute_command(const char *command)
+int execute_command(int argc, char *argv[])
 {
-    if (strcmp(command, "-u") == 0 || strcmp(command, "update") == 0)
+    if (strcmp(argv[1], "-u") == 0 || strcmp(argv[1], "update") == 0)
     {
         return handle_update();
     }
-    else if (strcmp(command, "-c") == 0 || strcmp(command, "clean") == 0)
+    else if (strcmp(argv[1], "-c") == 0 || strcmp(argv[1], "clean") == 0)
     {
         return handle_clean();
     }
-    else if (strcmp(command, "ls") == 0)
+    else if (strcmp(argv[1], "ls") == 0)
     {
         return handle_ls();
+    }else if (strcmp(argv[1], "-d") == 0)
+    {
+        
     }
     
-    else if (strcmp(command, "help") == 0 || strcmp(command, "-h") == 0)
+    
+    else if (strcmp(argv[1], "help") == 0 || strcmp(argv[1], "-h") == 0)
     {
         return print_help();
     }
-    else if (strcmp(command, "version") == 0 || strcmp(command, "-v") == 0)
+    else if (strcmp(argv[1], "version") == 0 || strcmp(argv[1], "-v") == 0)
     {
        return version();
     }
 
-    print_unknown_command(command);
+    print_unknown_command(argv[1]);
     return 1;
 }

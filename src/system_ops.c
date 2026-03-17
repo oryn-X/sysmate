@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
-#include <dirent.h>
 
 #include "system_ops.h"
 #include "ui.h"
@@ -97,14 +96,30 @@ int handle_ls(void)
 {
     print_mode("ls");
 
-    /*    DIR *dir = opendir(".");
+    DIR *dir = opendir(".");
+
+    DIR *dir = opendir(".");
+
     struct dirent *entry;
     int index = 1;
     if (dir == NULL)
     {
         print_status("Cannot open directory.", 1);
         return 1;
-    } */
+    }
+
+    while ((entry = readdir(dir)) != NULL)
+    {
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+        {
+            continue;
+        }
+
+        printf("[%d] %s\n", index, entry->d_name);
+        index++;
+    }
 
     return 0;
 }
+/*
+int handle_delete(const char *) */

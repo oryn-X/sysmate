@@ -1,6 +1,6 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-int execute_command(const char *command);
+int execute_command(int argc, char *argv[]);
 
 #endif
