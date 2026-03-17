@@ -1,10 +1,7 @@
 #include <stdio.h>
-
 #include "ui.h"
 
-/* Colors */
-
-
+/* Show basic usage instructions */
 void print_usage(void)
 {
     printf("Try:\n");
@@ -12,27 +9,30 @@ void print_usage(void)
     printf("  sysmate version or sysmate -v\n");
 }
 
+/* Print current mode (e.g., ls, clean) */
 void print_mode(const char *mode)
 {
     printf(C_BPURPLE "[OK] Mode: %s\n" C_RESET, mode);
 }
 
-void print_status(const char *status, int is_erorr)
+/* Print status message (success or error) */
+void print_status(const char *status, int is_error)
 {
-    if (is_erorr == 0)
+    if (is_error == 0)
     {
-        // successfully = 0
-        printf(C_GREEN "%s\033[0m\n", status);
+        /* Success message */
+        printf(C_GREEN "%s\n" C_RESET, status);
     }
-    else if (is_erorr == 1)
+    else if (is_error == 1)
     {
-        // Erorr = 1
+        /* Error message */
         printf(C_RED "%s\n" C_RESET, status);
     }
 }
 
+/* Handle unknown command input */
 void print_unknown_command(const char *com)
 {
-    printf("Unknown command: %s\n",com);
+    printf("Unknown command: %s\n", com);
     print_usage();
 }

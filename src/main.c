@@ -1,15 +1,9 @@
 #include "commands.h"
 #include "ui.h"
 
-
-
+/* Entry point of the program */
 int main(int argc, char *argv[])
 {
-    if (argc != 2)
-    {
-        print_usage();
-        return 1;
-    }
-
+    /* Pass user input to command handler */
     return execute_command(argc, argv);
 }
