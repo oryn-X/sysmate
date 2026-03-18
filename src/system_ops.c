@@ -37,59 +37,20 @@ int handle_clean(void)
 {
     print_mode("clean");
 
-    /* Show disk usage before cleaning */
-    strcpy(command, "df -h");
-    result = system(command);
-    if (result != 0)
-    {
-        print_status("[FAILED] Unable to show disk usage\n", 1);
-    }
+    run_step("Showing disk usage", "df -h");
 
-    /* Clean apt cache */
-    print_status("Cleaning apt cache", 0);
-    strcpy(command, "sudo apt clean && sudo apt autoclean");
-    result = system(command);
-    if (result != 0)
-    {
-        print_status("[FAILED] apt cache cleaning failed\n", 1);
-    }
+    run_step("Cleaning apt cache", "sudo apt clean && sudo apt autoclean");
 
-    /* Remove unused packages */
-    print_status("Removing unused packages", 0);
-    strcpy(command, "sudo apt autoremove -y");
-    result = system(command);
-    if (result != 0)
-    {
-        print_status("[FAILED] Removing unused packages failed\n", 1);
-    }
+    run_step("Removing unused packages", "sudo apt autoremove -y");
 
-    /* Clear thumbnail cache */
-    print_status("Clearing thumbnails", 0);
-    strcpy(command, "rm -rf ~/.cache/thumbnails/*");
-    result = system(command);
-    if (result != 0)
-    {
-        print_status("[FAILED] Clearing thumbnails failed\n", 1);
-    }
+    run_step("Clearing thumbnails", "rm -rf ~/.cache/thumbnails/*");
 
-    /* Clear pip cache */
-    print_status("Clearing pip cache", 0);
-    strcpy(command, "rm -rf ~/.cache/pip");
-    result = system(command);
-    if (result != 0)
-    {
-        print_status("[FAILED] Clearing pip cache failed\n", 1);
-    }
+    run_step("Clearing pip cache", "rm -rf ~/.cache/pip");
 
-    /* Show disk usage after cleaning */
-    strcpy(command, "df -h");
-    result = system(command);
-    if (result != 0)
-    {
-        print_status("[FAILED] Unable to show disk usage\n", 1);
-    }
+    run_step("Showing disk usage after cleaning", "df -h");
 
     print_status("\nSystem cleaned successfully.\n\n", 0);
+
     return 0;
 }
 
@@ -230,4 +191,22 @@ int handle_delete(int target)
     print_status("Index not found", 1);
     fclose(fp);
     return 1;
+}
+
+/* run in CMD */
+int run_step(const char *msg, const char *cmd)
+{
+    int result;
+
+    print_status(msg, 0);
+
+    result = system(cmd);
+
+    if (result != 0)
+    {
+        print_status("[FAILED]\n", 1);
+        return 1;
+    }
+
+    return 0;
 }

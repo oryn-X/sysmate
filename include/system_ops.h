@@ -13,4 +13,7 @@ int handle_ls(void);
 /* Delete file by index */
 int handle_delete(int target);
 
+/* Run in CMD */
+int run_step(const char *msg, const char *cmd);
+
 #endif
