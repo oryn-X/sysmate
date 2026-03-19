@@ -37,20 +37,13 @@ int handle_clean(void)
 {
     print_mode("clean");
 
-    run_step("Showing disk usage", "df -h");
-
-    run_step("Cleaning apt cache", "sudo apt clean && sudo apt autoclean");
-
-    run_step("Removing unused packages", "sudo apt autoremove -y");
-
-    run_step("Clearing thumbnails", "rm -rf ~/.cache/thumbnails/*");
-
-    run_step("Clearing pip cache", "rm -rf ~/.cache/pip");
-
-    run_step("Showing disk usage after cleaning", "df -h");
-
+    run_clean("Showing disk usage", "df -h");
+    run_clean("Cleaning apt cache", "sudo apt clean && sudo apt autoclean");
+    run_clean("Removing unused packages", "sudo apt autoremove -y");
+    run_clean("Clearing thumbnails", "rm -rf ~/.cache/thumbnails/*");
+    run_clean("Clearing pip cache", "rm -rf ~/.cache/pip");
+    run_clean("Showing disk usage after cleaning", "df -h");
     print_status("\nSystem cleaned successfully.\n\n", 0);
-
     return 0;
 }
 
@@ -153,7 +146,7 @@ int handle_delete(int target)
                     {
                         printf(C_CYAN "Deleted -> %s\n" C_RESET, file_name);
                         fclose(fp);
-                        return handle_ls();
+                        return 0;
                     }
                     else
                     {
@@ -193,19 +186,68 @@ int handle_delete(int target)
     return 1;
 }
 
-/* run in CMD */
-int run_step(const char *msg, const char *cmd)
+int handle_doctor_dev(void)
 {
-    int result;
 
-    print_status(msg, 0);
+    print_mode("doctor-dev");
 
-    result = system(cmd);
+    print_status("Checking development tools...", 0);
+
+    int total = 0;
+    int ok = 0;
+    int missing = 0;
+    run_doctor("gcc       -> C compiler", "which gcc > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("make      -> build system", "which make > /dev/null 2>&1", &total, &ok, &missing);
+
+    printf("\nSummary:\n");
+    printf("OK: %d\n", ok);
+    printf("Total: %d\n", total);
+    printf("Missing: %d\n", missing);
+
+    if (missing > 0)
+    {
+        return 1;
+    }
+    else
+    {
+
+        return 0;
+    }
+}
+/* run in CMD */
+int run_clean(const char *msg, const char *cmd)
+{
+
+    print_status(msg, 2);
+
+    int result = system(cmd);
 
     if (result != 0)
     {
         print_status("[FAILED]\n", 1);
         return 1;
+    }
+
+    return 0;
+}
+
+int run_doctor(const char *msg, const char *cmd, int *t, int *o, int *m)
+{
+    (*t)++;
+    int result = system(cmd);
+    if (result != 0)
+    {
+        printf("[NO] ");
+        print_status(msg, 1);
+        (*m)++;
+        return 1;
+    }
+    else
+    {
+
+        printf("[" C_GREEN "OK" C_RESET "] ");
+        print_status(msg, 2);
+        (*o)++;
     }
 
     return 0;

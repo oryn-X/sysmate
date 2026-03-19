@@ -28,6 +28,10 @@ void print_status(const char *status, int is_error)
         /* Error message */
         printf(C_RED "%s\n" C_RESET, status);
     }
+    else if (is_error == 2)
+    {
+        printf( "%s\n", status);
+    }
 }
 
 /* Handle unknown command input */

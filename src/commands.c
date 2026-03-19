@@ -63,7 +63,17 @@ int execute_command(int argc, char *argv[])
         int target = atoi(argv[2]);
 
         return handle_delete(target);
+    }else if (strcmp(command,"doctor-dev") == 0 || strcmp(command,"-dr-dev") == 0)
+    {
+      if (argc != 2)
+      {
+       print_status("Usage: Sysmate doctor <option>", 1); 
+       return 1;   
+      }
+      return handle_doctor_dev();
+      
     }
+
 
     /* Show help menu */
     else if (strcmp(command, "help") == 0 || strcmp(command, "-h") == 0)
