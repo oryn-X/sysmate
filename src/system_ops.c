@@ -237,7 +237,7 @@ int run_doctor(const char *msg, const char *cmd, int *t, int *o, int *m)
     int result = system(cmd);
     if (result != 0)
     {
-        printf("[NO] ");
+        printf("[" C_RED "NO" C_RESET "] ");
         print_status(msg, 1);
         (*m)++;
         return 1;

@@ -32,6 +32,7 @@ make
 ./build/sysmate update
 ./build/sysmate clean
 ./build/sysmate ls
+./build/sysmate -dr-dev
 ```
 
 ## Clean
