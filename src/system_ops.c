@@ -196,13 +196,45 @@ int handle_doctor_dev(void)
     int total = 0;
     int ok = 0;
     int missing = 0;
-    run_doctor("gcc       -> C compiler", "which gcc > /dev/null 2>&1", &total, &ok, &missing);
-    run_doctor("make      -> build system", "which make > /dev/null 2>&1", &total, &ok, &missing);
+    // ===== Core Build Tools =====
+    run_doctor("gcc        -> C compiler",        "which gcc > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("g++        -> C++ compiler",      "which g++ > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("make       -> build system",      "which make > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("cmake      -> build generator",   "which cmake > /dev/null 2>&1", &total, &ok, &missing);
 
-    printf("\nSummary:\n");
-    printf("OK: %d\n", ok);
-    printf("Total: %d\n", total);
-    printf("Missing: %d\n", missing);
+    // ===== Version Control =====
+    run_doctor("git        -> version control",   "which git > /dev/null 2>&1", &total, &ok, &missing);
+
+    // ===== Scripting & Tools =====
+    run_doctor("python3    -> scripting",         "which python3 > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("pip        -> python packages",   "which pip > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("node       -> JS runtime",        "which node > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("npm        -> node packages",     "which npm > /dev/null 2>&1", &total, &ok, &missing);
+
+    // ===== Debugging & System =====
+    run_doctor("gdb        -> debugger",          "which gdb > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("valgrind   -> memory checker",    "which valgrind > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("pkg-config -> library helper",    "which pkg-config > /dev/null 2>&1", &total, &ok, &missing);
+
+    // ===== Networking & CLI Tools =====
+    run_doctor("curl       -> HTTP client",       "which curl > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("wget       -> downloader",        "which wget > /dev/null 2>&1", &total, &ok, &missing);
+
+    // ===== Optional Dev Tools =====
+    run_doctor("docker     -> containers",        "which docker > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("code       -> VS Code",           "which code > /dev/null 2>&1", &total, &ok, &missing);
+
+    // ===== Summary Table =====
+    printf("\n");
+    printf("=====================================\n");
+    printf("        SysMate Doctor Summary       \n");
+    printf("=====================================\n");
+
+    printf("| %-12s | %-5d |\n", "Total Checks", total);
+    printf("| %-12s | %-5d |\n", "OK", ok);
+    printf("| %-12s | %-5d |\n", "Missing", missing);
+
+    printf("=====================================\n");
 
     if (missing > 0)
     {
