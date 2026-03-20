@@ -32,7 +32,7 @@ int handle_update(void)
     return 0;
 }
 
-/* Clean system files and unused data */
+/*Clean system files and unused data */
 int handle_clean(void)
 {
     print_mode("clean");
