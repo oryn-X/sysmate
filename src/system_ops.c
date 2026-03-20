@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+#include <unistd.h>
 
 #include "system_ops.h"
 #include "ui.h"
@@ -10,6 +11,11 @@
 
 /* Store shell commands */
 char command[MAX_LEN];
+
+int doctor_total;
+int doctor_pass;
+int doctor_missing;
+char doctor_missing_packages[2024];
 
 /* Store system() result */
 int result;
@@ -188,56 +194,57 @@ int handle_delete(int target)
 
 int handle_doctor_dev(void)
 {
+    doctor_total = 0;
+    doctor_pass = 0;
+    doctor_missing = 0;
+   doctor_missing_packages[0] = '\0';
 
-    print_mode("doctor-dev");
-
+    print_mode("doctor-dev  ");
+    printf("\n");
     print_status("Checking development tools...", 0);
+    printf("──────────────────────────────────\n");
 
-    int total = 0;
-    int ok = 0;
-    int missing = 0;
     // ===== Core Build Tools =====
-    run_doctor("gcc        -> C compiler",        "which gcc > /dev/null 2>&1", &total, &ok, &missing);
-    run_doctor("g++        -> C++ compiler",      "which g++ > /dev/null 2>&1", &total, &ok, &missing);
-    run_doctor("make       -> build system",      "which make > /dev/null 2>&1", &total, &ok, &missing);
-    run_doctor("cmake      -> build generator",   "which cmake > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("gcc        -> C compiler", "which gcc > /dev/null 2>&1", "gcc");
+    run_doctor("g++        -> C++ compiler", "which g++ > /dev/null 2>&1", "g++");
+    run_doctor("make       -> build system", "which make > /dev/null 2>&1", "make");
+    // run_doctor("cmake      -> build generator", "which cmake > /dev/null 2>&1", &total, &ok, &missing);
 
     // ===== Version Control =====
-    run_doctor("git        -> version control",   "which git > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("git        -> version control", "which git > /dev/null 2>&1", "git");
 
     // ===== Scripting & Tools =====
-    run_doctor("python3    -> scripting",         "which python3 > /dev/null 2>&1", &total, &ok, &missing);
-    run_doctor("pip        -> python packages",   "which pip > /dev/null 2>&1", &total, &ok, &missing);
-    run_doctor("node       -> JS runtime",        "which node > /dev/null 2>&1", &total, &ok, &missing);
-    run_doctor("npm        -> node packages",     "which npm > /dev/null 2>&1", &total, &ok, &missing);
+    run_doctor("python3    -> scripting", "which python3 > /dev/null 2>&1", "python3");
+    run_doctor("pip3       -> python packages", "which pip3 > /dev/null 2>&1", "pip3");
+    // run_doctor("node       -> JS runtime", "which node > /dev/null 2>&1", &total, &ok, &missing);
+    // run_doctor("npm        -> node packages", "which npm > /dev/null 2>&1", &total, &ok, &missing);
 
     // ===== Debugging & System =====
-    run_doctor("gdb        -> debugger",          "which gdb > /dev/null 2>&1", &total, &ok, &missing);
-    run_doctor("valgrind   -> memory checker",    "which valgrind > /dev/null 2>&1", &total, &ok, &missing);
-    run_doctor("pkg-config -> library helper",    "which pkg-config > /dev/null 2>&1", &total, &ok, &missing);
+    // run_doctor("gdb        -> debugger", "which gdb > /dev/null 2>&1", &total, &ok, &missing);
+    // run_doctor("valgrind   -> memory checker", "which valgrind > /dev/null 2>&1", &total, &ok, &missing);
+    // run_doctor("pkg-config -> library helper", "which pkg-config > /dev/null 2>&1", &total, &ok, &missing);
 
     // ===== Networking & CLI Tools =====
-    run_doctor("curl       -> HTTP client",       "which curl > /dev/null 2>&1", &total, &ok, &missing);
-    run_doctor("wget       -> downloader",        "which wget > /dev/null 2>&1", &total, &ok, &missing);
+    // run_doctor("curl       -> HTTP client", "which curl > /dev/null 2>&1", &total, &ok, &missing);
+    // run_doctor("wget       -> downloader", "which wget > /dev/null 2>&1", &total, &ok, &missing);
 
     // ===== Optional Dev Tools =====
-    run_doctor("docker     -> containers",        "which docker > /dev/null 2>&1", &total, &ok, &missing);
-    run_doctor("code       -> VS Code",           "which code > /dev/null 2>&1", &total, &ok, &missing);
+    // run_doctor("docker     -> containers", "which docker > /dev/null 2>&1", &total, &ok, &missing);
+    // run_doctor("code       -> VS Code", "which code > /dev/null 2>&1", &total, &ok, &missing);
 
     // ===== Summary Table =====
     printf("\n");
-    printf("=====================================\n");
-    printf("        SysMate Doctor Summary       \n");
-    printf("=====================================\n");
+    printf("╭─ Final Summary ──────────────────────────╮\n");
+    printf("│ Checks:   %-30d │\n", doctor_total);
+    printf("│ Passed:   %-30d │\n", doctor_pass);
+    printf("│ Missing:  %-30d │\n", doctor_missing);
+    printf("╰──────────────────────────────────────────╯\n");
 
-    printf("| %-12s | %-5d |\n", "Total Checks", total);
-    printf("| %-12s | %-5d |\n", "OK", ok);
-    printf("| %-12s | %-5d |\n", "Missing", missing);
+    printf("%s",doctor_missing_packages);
 
-    printf("=====================================\n");
-
-    if (missing > 0)
+    if (doctor_missing > 0)
     {
+        char ny[8];
         return 1;
     }
     else
@@ -263,23 +270,33 @@ int run_clean(const char *msg, const char *cmd)
     return 0;
 }
 
-int run_doctor(const char *msg, const char *cmd, int *t, int *o, int *m)
+int run_doctor(const char *msg, const char *cmd, const char *package)
 {
-    (*t)++;
+//run_doctor("pip3       -> python packages", "which pip3 > /dev/null 2>&1", "pip3");
+    doctor_total++;
     int result = system(cmd);
     if (result != 0)
     {
-        printf("[" C_RED "NO" C_RESET "] ");
+        printf("[ " C_RED "FAIL" C_RESET " ] ");
         print_status(msg, 1);
-        (*m)++;
+        if (doctor_missing_packages[0] == '\0')
+        {
+            strcpy(doctor_missing_packages, package);
+        }
+        else
+        {
+            strcat(doctor_missing_packages, " ");
+            strcat(doctor_missing_packages, package);
+        }
+
+        doctor_missing++;
         return 1;
     }
     else
     {
-
-        printf("[" C_GREEN "OK" C_RESET "] ");
+        printf("[ " C_GREEN "PASS" C_RESET " ] ");
         print_status(msg, 2);
-        (*o)++;
+        doctor_pass++;
     }
 
     return 0;
