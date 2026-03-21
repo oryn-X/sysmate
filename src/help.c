@@ -25,16 +25,18 @@ int print_help(void)
     /* Usage */
     printf(C_GREEN "  USAGE\n" C_RESET);
     printf("    " C_WHITE "sysmate <command>" C_RESET "\n");
-    printf("    " C_WHITE "sysmate delete <index>" C_RESET "\n\n");
+    printf("    " C_WHITE "sysmate delete <index>" C_RESET "\n");
+    printf("    " C_WHITE "sysmate doctor-dev" C_RESET "\n\n");
 
-    /* Commands */
+    /* Commands */  
     printf(C_GREEN "  COMMANDS\n" C_RESET);
-    printf("    " C_CYAN "update"  C_RESET "     Update and upgrade system\n");
-    printf("    " C_CYAN "clean"   C_RESET "      Clean unused packages\n");
-    printf("    " C_CYAN "ls"      C_RESET "         List files and build .sysmate_index\n");
-    printf("    " C_CYAN "delete"  C_RESET "     Delete file by index\n");
-    printf("    " C_CYAN "help"    C_RESET "       Show help menu\n");
-    printf("    " C_CYAN "version" C_RESET "    Show tool version\n\n");
+    printf("    " C_CYAN "update"      C_RESET "  Update and upgrade system\n");
+    printf("    " C_CYAN "clean"       C_RESET "   Clean unused packages\n");
+    printf("    " C_CYAN "ls"          C_RESET "      List files and build .sysmate_index\n");
+    printf("    " C_CYAN "delete"      C_RESET "  Delete file by index\n");
+    printf("    " C_CYAN "doctor-dev"  C_RESET " Check development tools\n");
+    printf("    " C_CYAN "help"        C_RESET "    Show help menu\n");
+    printf("    " C_CYAN "version"     C_RESET " Show tool version\n\n");
 
     /* Shortcuts */
     printf(C_GREEN "  SHORTCUTS\n" C_RESET);
@@ -49,12 +51,14 @@ int print_help(void)
     printf("    " C_WHITE "sysmate update" C_RESET "\n");
     printf("    " C_WHITE "sysmate clean" C_RESET "\n");
     printf("    " C_WHITE "sysmate ls" C_RESET "\n");
-    printf("    " C_WHITE "sysmate delete 3" C_RESET "\n\n");
+    printf("    " C_WHITE "sysmate delete 3" C_RESET "\n");
+    printf("    " C_WHITE "sysmate doctor-dev" C_RESET "\n\n");
 
     /* Notes */
     printf(C_GREEN "  NOTES\n" C_RESET);
     printf("    " C_WHITE "Run 'sysmate ls' before using delete." C_RESET "\n");
-    printf("    " C_WHITE "'delete' uses the index stored in .sysmate_index." C_RESET "\n\n");
+    printf("    " C_WHITE "'delete' uses the index stored in .sysmate_index." C_RESET "\n");
+    printf("    " C_WHITE "'doctor-dev' checks core development tools." C_RESET "\n\n");
 
     return 0;
 }

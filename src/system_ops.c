@@ -43,12 +43,12 @@ int handle_clean(void)
 {
     print_mode("clean");
 
-    run_clean("Showing disk usage", "df -h");
-    run_clean("Cleaning apt cache", "sudo apt clean && sudo apt autoclean");
-    run_clean("Removing unused packages", "sudo apt autoremove -y");
-    run_clean("Clearing thumbnails", "rm -rf ~/.cache/thumbnails/*");
-    run_clean("Clearing pip cache", "rm -rf ~/.cache/pip");
-    run_clean("Showing disk usage after cleaning", "df -h");
+    run_system("Showing disk usage", "df -h");
+    run_system("Cleaning apt cache", "sudo apt clean && sudo apt autoclean");
+    run_system("Removing unused packages", "sudo apt autoremove -y");
+    run_system("Clearing thumbnails", "rm -rf ~/.cache/thumbnails/*");
+    run_system("Clearing pip cache", "rm -rf ~/.cache/pip");
+    run_system("Showing disk usage after cleaning", "df -h");
     print_status("\nSystem cleaned successfully.\n\n", 0);
     return 0;
 }
@@ -197,7 +197,7 @@ int handle_doctor_dev(void)
     doctor_total = 0;
     doctor_pass = 0;
     doctor_missing = 0;
-   doctor_missing_packages[0] = '\0';
+    doctor_missing_packages[0] = '\0';
 
     print_mode("doctor-dev  ");
     printf("\n");
@@ -208,30 +208,11 @@ int handle_doctor_dev(void)
     run_doctor("gcc        -> C compiler", "which gcc > /dev/null 2>&1", "gcc");
     run_doctor("g++        -> C++ compiler", "which g++ > /dev/null 2>&1", "g++");
     run_doctor("make       -> build system", "which make > /dev/null 2>&1", "make");
-    // run_doctor("cmake      -> build generator", "which cmake > /dev/null 2>&1", &total, &ok, &missing);
-
     // ===== Version Control =====
     run_doctor("git        -> version control", "which git > /dev/null 2>&1", "git");
-
     // ===== Scripting & Tools =====
     run_doctor("python3    -> scripting", "which python3 > /dev/null 2>&1", "python3");
-    run_doctor("pip3       -> python packages", "which pip3 > /dev/null 2>&1", "pip3");
-    // run_doctor("node       -> JS runtime", "which node > /dev/null 2>&1", &total, &ok, &missing);
-    // run_doctor("npm        -> node packages", "which npm > /dev/null 2>&1", &total, &ok, &missing);
-
-    // ===== Debugging & System =====
-    // run_doctor("gdb        -> debugger", "which gdb > /dev/null 2>&1", &total, &ok, &missing);
-    // run_doctor("valgrind   -> memory checker", "which valgrind > /dev/null 2>&1", &total, &ok, &missing);
-    // run_doctor("pkg-config -> library helper", "which pkg-config > /dev/null 2>&1", &total, &ok, &missing);
-
-    // ===== Networking & CLI Tools =====
-    // run_doctor("curl       -> HTTP client", "which curl > /dev/null 2>&1", &total, &ok, &missing);
-    // run_doctor("wget       -> downloader", "which wget > /dev/null 2>&1", &total, &ok, &missing);
-
-    // ===== Optional Dev Tools =====
-    // run_doctor("docker     -> containers", "which docker > /dev/null 2>&1", &total, &ok, &missing);
-    // run_doctor("code       -> VS Code", "which code > /dev/null 2>&1", &total, &ok, &missing);
-
+    run_doctor("pip3       -> python packages", "which pip3 > /dev/null 2>&1", "python3-pip");
     // ===== Summary Table =====
     printf("\n");
     printf("╭─ Final Summary ──────────────────────────╮\n");
@@ -240,21 +221,46 @@ int handle_doctor_dev(void)
     printf("│ Missing:  %-30d │\n", doctor_missing);
     printf("╰──────────────────────────────────────────╯\n");
 
-    printf("%s",doctor_missing_packages);
+    printf(C_RED " %s\n" C_RESET, doctor_missing_packages);
 
     if (doctor_missing > 0)
     {
         char ny[8];
-        return 1;
+       printf("Do you want to install the missing packages? (Y/N): ");
+        if (fgets(ny, sizeof(ny), stdin) == NULL)
+        {
+
+            print_status("Input error", 1);
+            return 1;
+        }
+
+        if (ny[0] == 'y' || ny[0] == 'Y')
+        {
+
+            strcpy(command, "sudo apt install -y ");
+            strcat(command, doctor_missing_packages);
+            run_system("Error installation", command);
+            printf(C_YELLOW "done installation [ %s ]\n" C_RESET, doctor_missing_packages);
+        }
+        else if (ny[0] == 'n' || ny[0] == 'N')
+        {
+            return 1;
+        }
+        else
+        {
+            print_status(" Enter a valid choice Y or N", 1);
+        }
+
+        return 0;
     }
     else
     {
 
-        return 0;
+        return 1;
     }
 }
 /* run in CMD */
-int run_clean(const char *msg, const char *cmd)
+int run_system(const char *msg, const char *cmd)
 {
 
     print_status(msg, 2);
@@ -272,7 +278,6 @@ int run_clean(const char *msg, const char *cmd)
 
 int run_doctor(const char *msg, const char *cmd, const char *package)
 {
-//run_doctor("pip3       -> python packages", "which pip3 > /dev/null 2>&1", "pip3");
     doctor_total++;
     int result = system(cmd);
     if (result != 0)

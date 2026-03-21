@@ -63,7 +63,7 @@ int execute_command(int argc, char *argv[])
         int target = atoi(argv[2]);
 
         return handle_delete(target);
-    }else if (strcmp(command,"doctor-dev") == 0 || strcmp(command,"-dr-dev") == 0)
+    }else if (strcmp(command,"doctor-dev") == 0 || strcmp(command,"-dd") == 0)
     {
       if (argc != 2)
       {
