@@ -88,7 +88,6 @@ ls creates a file named .sysmate_index
 delete uses the index stored in .sysmate_index
 Run sysmate ls before using delete
 doctor-dev checks core development tools
-
 ```
 
 ## Clean build files
