@@ -48,12 +48,13 @@ Install Sysmate for your current user.
 ````bash
 git clone https://github.com/oryn-X/sysmate.git
 cd sysmate
-make install-user
+make install-sysmate
 ## Build
+````
 
 ```blocks
 make
-````
+```
 
 ## Run from project folder
 
@@ -70,7 +71,7 @@ make
 ## Install for current user
 
 ```blocks
-make install-user
+make install-sysmate
 ```
 
 ## If sysmate is not found after installation, add this once:
@@ -96,7 +97,7 @@ sysmate doctor-dev
 ## Uninstall
 
 ```blocks
-make uninstall-user
+make uninstall-sysmate
 ```
 
 ## Notes

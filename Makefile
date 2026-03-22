@@ -24,7 +24,7 @@ run: $(TARGET)
 clean:
 	rm -rf build
 
-install-user: $(TARGET)
+install-sysmate: $(TARGET)
 	mkdir -p $(USER_INSTALL_PATH)
 	cp $(TARGET) $(USER_INSTALL_PATH)/sysmate
 	chmod +x $(USER_INSTALL_PATH)/sysmate
@@ -34,7 +34,7 @@ install-user: $(TARGET)
 	@echo "Then run:"
 	@echo "source ~/.bashrc"
 
-uninstall-user:
+uninstall-sysmate:
 	rm -f $(USER_INSTALL_PATH)/sysmate
 	@echo "Removed from $(USER_INSTALL_PATH)"
 
