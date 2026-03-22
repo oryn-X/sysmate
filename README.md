@@ -6,9 +6,9 @@
 
 Stay connected:
 
-- GitHub M0SAIF-ANTNET: https://[github.com/USERNAME/sysmate](https://github.com/M0SAIF-ANTNET)
-- GitHub oryn-X: https://[github.com/USERNAME/sysmate](https://github.com/oryn-X)
-- Discord https://discord.gg/v38BhC8f
+- GitHub [M0SAIF-ANTNET](https://github.com/M0SAIF-ANTNET)
+- GitHub [oryn-X](https://github.com/oryn-X)
+- Discord [Root Access](https://discord.gg/v38BhC8f)
 
 ## Features
 
