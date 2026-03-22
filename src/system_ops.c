@@ -43,12 +43,27 @@ int handle_clean(void)
 {
     print_mode("clean");
 
-    run_system("Showing disk usage", "df -h");
-    run_system("Cleaning apt cache", "sudo apt clean && sudo apt autoclean");
-    run_system("Removing unused packages", "sudo apt autoremove -y");
-    run_system("Clearing thumbnails", "rm -rf ~/.cache/thumbnails/*");
-    run_system("Clearing pip cache", "rm -rf ~/.cache/pip");
-    run_system("Showing disk usage after cleaning", "df -h");
+    int clean_failed = 0;
+
+    if (run_system("Showing disk usage" C_RESET, "df -h") != 0)
+        clean_failed = 1;
+    if (run_system("Cleaning apt cache" C_RESET, "sudo apt clean && sudo apt autoclean") != 0)
+        clean_failed = 1;
+    if (run_system("Removing unused packages" C_RESET, "sudo apt autoremove -y") != 0)
+        clean_failed = 1;
+    if (run_system("Clearing thumbnails" C_RESET, "rm -rf ~/.cache/thumbnails/*") != 0)
+        clean_failed = 1;
+    if (run_system("Clearing pip cache" C_RESET, "rm -rf ~/.cache/pip") != 0)
+        clean_failed = 1;
+    if (run_system("Showing disk usage after cleaning" C_RESET, "df -h") != 0)
+        clean_failed = 1;
+
+    if (clean_failed)
+    {
+        return 1;
+    }
+
+    return 0;
     print_status("\nSystem cleaned successfully.\n\n", 0);
     return 0;
 }
@@ -121,10 +136,24 @@ int handle_delete(int target)
     while (fgets(buffer, sizeof(buffer), fp) != NULL)
     {
         /* Extract file index and file name */
-        int result = sscanf(buffer, "%d|%s", &file_index, file_name);
-        if (result != 2)
+
+        char *separator = strchr(buffer, '|');
+        if (separator == NULL)
         {
             continue;
+        }
+
+        if (sscanf(buffer, "%d", &file_index) != 1)
+        {
+            continue;
+        }
+
+        strcpy(file_name, separator + 1);
+
+        int len = strlen(file_name);
+        if (len > 0 && file_name[len - 1] == '\n')
+        {
+            file_name[len - 1] = '\0';
         }
 
         /* Match the requested index */
@@ -136,12 +165,13 @@ int handle_delete(int target)
             /* Ask for delete confirmation */
             while (attempts > 0)
             {
-                printf("Delete " C_YELLOW "%s" C_RESET "? (y/n): ", file_name);
+                printf("Are you sure Delete " C_YELLOW "%s" C_RESET "? (y/n): ", file_name);
 
                 if (fgets(ny, sizeof(ny), stdin) == NULL)
                 {
                     print_status("Input error", 1);
                     fclose(fp);
+                    handle_ls();
                     return 1;
                 }
 
@@ -226,21 +256,27 @@ int handle_doctor_dev(void)
     if (doctor_missing > 0)
     {
         char ny[8];
-       printf("Do you want to install the missing packages? (Y/N): ");
+
+        printf("Do you want to install the missing packages? (Y/N): ");
+
         if (fgets(ny, sizeof(ny), stdin) == NULL)
         {
-
             print_status("Input error", 1);
             return 1;
         }
 
         if (ny[0] == 'y' || ny[0] == 'Y')
         {
-
             strcpy(command, "sudo apt install -y ");
             strcat(command, doctor_missing_packages);
-            run_system("Error installation", command);
-            printf(C_YELLOW "done installation [ %s ]\n" C_RESET, doctor_missing_packages);
+
+            if (run_system("Installing missing packages", command) != 0)
+            {
+                return 1;
+            }
+
+            printf(C_YELLOW "Done installation [ %s ]\n" C_RESET, doctor_missing_packages);
+            return 0;
         }
         else if (ny[0] == 'n' || ny[0] == 'N')
         {
@@ -248,22 +284,20 @@ int handle_doctor_dev(void)
         }
         else
         {
-            print_status(" Enter a valid choice Y or N", 1);
+            print_status("Enter a valid choice Y or N", 1);
+            return 1;
         }
-
-        return 0;
     }
     else
     {
-
-        return 1;
+        return 0;
     }
 }
 /* run in CMD */
 int run_system(const char *msg, const char *cmd)
 {
 
-    print_status(msg, 2);
+    print_status(msg, 0);
 
     int result = system(cmd);
 

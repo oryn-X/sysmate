@@ -14,6 +14,7 @@ int handle_ls(void);
 int handle_delete(int target);
 
 /* Run in CMD */
+int handle_doctor_dev(void);
 int run_system(const char *msg, const char *cmd);
 int run_doctor(const char *msg, const char *cmd,const char *package);
 

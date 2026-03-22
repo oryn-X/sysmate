@@ -9,6 +9,13 @@
 
 int execute_command(int argc, char *argv[])
 {
+
+    if (argc < 2)
+    {
+        print_usage();
+        return 1;
+    }
+
     /* Get the command entered by the user */
     const char *command = argv[1];
 
@@ -60,30 +67,47 @@ int execute_command(int argc, char *argv[])
         }
 
         /* Convert argument to integer */
-        int target = atoi(argv[2]);
+        char *endptr;
+        long value = strtol(argv[2], &endptr, 10);
 
+        if (*endptr != '\0' || value < 1)
+        {
+            print_status("Invalid index", 1);
+            return 1;
+        }
+
+        int target = (int)value;
         return handle_delete(target);
-    }else if (strcmp(command,"doctor-dev") == 0 || strcmp(command,"-dd") == 0)
-    {
-      if (argc != 2)
-      {
-       print_status("Usage: Sysmate doctor <option>", 1); 
-       return 1;   
-      }
-      return handle_doctor_dev();
-      
     }
-
+    else if (strcmp(command, "doctor-dev") == 0 || strcmp(command, "-dd") == 0)
+    {
+        if (argc != 2)
+        {
+            print_status("Usage: Sysmate doctor <option>", 1);
+            return 1;
+        }
+        return handle_doctor_dev();
+    }
 
     /* Show help menu */
     else if (strcmp(command, "help") == 0 || strcmp(command, "-h") == 0)
     {
+        if (argc != 2)
+        {
+            print_unknown_command(argv[1]);
+            return 1;
+        }
         return print_help();
     }
 
     /* Show version */
     else if (strcmp(command, "version") == 0 || strcmp(command, "-v") == 0)
     {
+        if (argc != 2)
+        {
+            print_unknown_command(argv[1]);
+            return 1;
+        }
         return version();
     }
 

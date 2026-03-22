@@ -21,7 +21,4 @@ run: $(TARGET)
 	./$(TARGET)
 
 clean:
-	rm -f build
-
-
-
+	rm -rf build

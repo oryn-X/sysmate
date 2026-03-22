@@ -44,6 +44,7 @@ int print_help(void)
     printf("    " C_CYAN "-c" C_RESET "          clean\n");
     printf("    " C_CYAN "-d" C_RESET "          delete\n");
     printf("    " C_CYAN "-h" C_RESET "          help\n");
+    printf("    " C_CYAN "-dd" C_RESET "         doctor-dev\n\n");
     printf("    " C_CYAN "-v" C_RESET "          version\n\n");
 
     /* Examples */

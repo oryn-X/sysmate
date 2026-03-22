@@ -4,7 +4,7 @@
 /* Show basic usage instructions */
 void print_usage(void)
 {
-    printf("Try:\n");
+    printf(C_CYAN"Try:\n"C_RESET);
     printf("  sysmate help or sysmate -h\n");
     printf("  sysmate version or sysmate -v\n");
 }
@@ -37,6 +37,6 @@ void print_status(const char *status, int is_error)
 /* Handle unknown command input */
 void print_unknown_command(const char *com)
 {
-    printf("Unknown command: %s\n", com);
+    printf("Unknown command:"C_RED " %s\n"C_RESET, com);
     print_usage();
 }
