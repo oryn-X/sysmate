@@ -41,22 +41,13 @@ int print_help(void)
     printf("     " C_CYAN "version       " C_RESET "→ Show version\n\n");
 
     /* Shortcuts */
-<<<<<<< HEAD
     printf(C_GREEN "  SHORTCUTS\n" C_RESET);
     printf("    " C_CYAN "-u" C_RESET "          update\n");
     printf("    " C_CYAN "-c" C_RESET "          clean\n");
     printf("    " C_CYAN "-d" C_RESET "          delete\n");
     printf("    " C_CYAN "-h" C_RESET "          help\n");
-    printf("    " C_CYAN "-dd" C_RESET "         doctor-dev\n\n");
+    printf("    " C_CYAN "-dd" C_RESET "         doctor-dev\n");
     printf("    " C_CYAN "-v" C_RESET "          version\n\n");
-=======
-    printf(C_GREEN "   SHORTCUTS\n" C_RESET);
-    printf("     " C_CYAN "-u   " C_RESET "update\n");
-    printf("     " C_CYAN "-c   " C_RESET "clean\n");
-    printf("     " C_CYAN "-d   " C_RESET "delete\n");
-    printf("     " C_CYAN "-h   " C_RESET "help\n");
-    printf("     " C_CYAN "-v   " C_RESET "version\n\n");
->>>>>>> 0e6e8c8 (help file)
 
     /* Examples */
     printf(C_GREEN "   EXAMPLES\n" C_RESET);

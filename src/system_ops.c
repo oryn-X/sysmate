@@ -45,18 +45,45 @@ int handle_clean(void)
 
     int clean_failed = 0;
 
-    if (run_system("Showing disk usage" C_RESET, "df -h") != 0)
-        clean_failed = 1;
+    run_info("Showing disk usage" C_RESET, "df -h");
+    
+    /* APT cleaning */
     if (run_system("Cleaning apt cache" C_RESET, "sudo apt clean && sudo apt autoclean") != 0)
         clean_failed = 1;
+    
     if (run_system("Removing unused packages" C_RESET, "sudo apt autoremove -y") != 0)
         clean_failed = 1;
+    
+    /* Fix broken dependencies (safe) */
+    if (run_system("Fixing broken packages" C_RESET, "sudo apt --fix-broken install -y") != 0)
+        clean_failed = 1;
+    
+    /* Logs cleanup (SAFE - limited size) */
+    if (run_system("Cleaning system logs (limit size)" C_RESET, "sudo journalctl --vacuum-size=100M") != 0)
+        clean_failed = 1;
+    
+    /* User cache (safe) */
+    if (run_system("Clearing user cache" C_RESET, "rm -rf ~/.cache/*") != 0)
+        clean_failed = 1;
+    
+    /* Thumbnails */
     if (run_system("Clearing thumbnails" C_RESET, "rm -rf ~/.cache/thumbnails/*") != 0)
         clean_failed = 1;
+    
+    /* Pip cache */
     if (run_system("Clearing pip cache" C_RESET, "rm -rf ~/.cache/pip") != 0)
         clean_failed = 1;
-    if (run_system("Showing disk usage after cleaning" C_RESET, "df -h") != 0)
-        clean_failed = 1;
+    
+    /* Flatpak (only if installed) */
+    run_info("Cleaning unused Flatpak packages" C_RESET,
+             "command -v flatpak >/dev/null && flatpak uninstall --unused -y");
+    
+    /* Snap (only if installed, safe retain) */
+    run_info("Cleaning old Snap versions" C_RESET,
+             "command -v snap >/dev/null && sudo snap set system refresh.retain=2");
+    
+    /* Final disk usage */
+    run_info("Showing disk usage after cleaning" C_RESET, "df -h");
 
     if (clean_failed)
     {
@@ -304,6 +331,20 @@ int run_system(const char *msg, const char *cmd)
     if (result != 0)
     {
         print_status("[FAILED]\n", 1);
+        return 1;
+    }
+
+    return 0;
+}
+
+int run_info (const char *msg, const char *cmd)
+{
+    print_status (msg, 0);
+    int result = system(cmd);
+
+    if (result != 0)
+    {
+        printf(C_YELLOW"[WARNING]\n"C_RESET);
         return 1;
     }
 

@@ -22,7 +22,6 @@ run: $(TARGET)
 	./$(TARGET)
 
 clean:
-<<<<<<< HEAD
 	rm -rf build
 
 install-user: $(TARGET)
@@ -46,6 +45,3 @@ help:
 	@echo "  make clean         Remove build files"
 	@echo "  make install-user  Install sysmate for current user"
 	@echo "  make uninstall-user Remove user installation"
-=======
-	rm -f build
->>>>>>> 0e6e8c8 (help file)
