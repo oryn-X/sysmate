@@ -1,0 +1,11 @@
+Build output,
+build/
+*.o
+*.out
+
+Sysmate generated files,
+.sysmate_index
+
+Editor / OS files,
+.DS_Store
+.vscode/
