@@ -1,6 +1,6 @@
-1|.git
-2|README.md
-3|include
-4|Makefile
-5|build
-6|src
+1|include
+2|build
+3|README.md
+4|src
+5|Makefile
+6|.git
