@@ -2,6 +2,14 @@
 
 **Sysmate** is a simple CLI utility written in C. It combines useful system and developer tasks into one tool.
 
+## Social Media
+
+Stay connected:
+
+- GitHub M0SAIF-ANTNET: https://[github.com/USERNAME/sysmate](https://github.com/M0SAIF-ANTNET)
+- GitHub oryn-X: https://[github.com/USERNAME/sysmate](https://github.com/oryn-X)
+- Discord https://discord.gg/v38BhC8f
+
 ## Features
 
 - Update system packages
@@ -31,11 +39,21 @@ sysmate/
 └── README.md
 ```
 
+## Installation
+
+Install Sysmate for your current user.
+
+### From GitHub
+
+````bash
+git clone https://github.com/oryn-X/sysmate.git
+cd sysmate
+make install-user
 ## Build
 
 ```blocks
 make
-```
+````
 
 ## Run from project folder
 
