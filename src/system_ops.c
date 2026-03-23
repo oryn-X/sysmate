@@ -131,7 +131,7 @@ int handle_ls(void)
         }
 
         /* Print file name and save it in index file */
-        printf("[%3d] %s\n", index, entry->d_name);
+        printf(" %2d | %s\n", index, entry->d_name);
         fprintf(fp, "%d|%s\n", index, entry->d_name);
         index++;
     }
