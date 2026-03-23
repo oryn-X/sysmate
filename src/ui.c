@@ -17,7 +17,7 @@ void print_mode(const char *mode)
 
 /* Print status message (success or error) */
 void print_status(const char *status, int is_error)
-{
+{ 
     if (is_error == 0)
     {
         /* Success message */

@@ -113,7 +113,7 @@ int handle_ls(void)
     }
     /* Check index file open error */
     else if (fp == NULL)
-    {
+    { 
         print_status("Cannot open file.", 1);
         closedir(dir);
         return 1;
