@@ -39,4 +39,4 @@ void print_unknown_command(const char *com)
 {
     printf("Unknown command:"C_RED " %s\n"C_RESET, com);
     print_usage();
-}
+} 
