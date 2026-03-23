@@ -49,6 +49,7 @@ Install Sysmate for your current user.
 git clone https://github.com/oryn-X/sysmate.git
 cd sysmate
 make install-user
+````
 ## Build
 ````
 
