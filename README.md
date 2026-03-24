@@ -104,6 +104,7 @@ make uninstall-user
 ## Notes
 
 ```text
+Sysmate available now in ubuntu and kali (coming soon for other systems)
 ls creates a file named .sysmate_index
 delete uses the index stored in .sysmate_index
 Run sysmate ls before using delete
