@@ -31,7 +31,6 @@ int execute_command(int argc, char *argv[])
 
         return handle_update();
     }
-
     /* Clean unused packages */
     else if (strcmp(command, "clean") == 0 || strcmp(command, "-c") == 0)
     {
@@ -42,7 +41,11 @@ int execute_command(int argc, char *argv[])
         }
 
         return handle_clean();
+    }else if (strcmp(command, "refresh") == 0 || strcmp(command, "-ref") == 0)
+    {
+        /* code */
     }
+    
 
     /* List files and build index */
     else if (strcmp(command, "ls") == 0)
