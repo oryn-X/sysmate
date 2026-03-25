@@ -33,7 +33,6 @@ int handle_clean(void)
         clean_failed = 1;
 
     /* Optional cleanup */
-    run_info("Cleaning unused Flatpak packages" C_RESET, "command -v flatpak >/dev/null && flatpak uninstall --unused -y");
     run_info("Cleaning old Snap versions" C_RESET, "command -v snap >/dev/null && sudo snap set system refresh.retain=2");
 
     /* After cleaning */
@@ -42,7 +41,7 @@ int handle_clean(void)
     if (clean_failed)
         return 1;
 
-    print_status("\nSystem cleaned successfully.\n", 0);
+    print_status("System cleaned successfully.\n", 0);
     return 0;
 }
 
@@ -51,7 +50,7 @@ int handle_clean(void)
 int run_system(const char *msg, const char *cmd)
 {
 
-    print_status(msg, 0);
+    print_status(msg, 2);
 
     int result = system(cmd);
 

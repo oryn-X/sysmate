@@ -4,7 +4,7 @@
 /* Show basic usage instructions */
 void print_usage(void)
 {
-    printf(C_CYAN"Try:\n"C_RESET);
+    printf(C_CYAN "Try:\n" C_RESET);
     printf("  sysmate help or sysmate -h\n");
     printf("  sysmate version or sysmate -v\n");
 }
@@ -28,11 +28,15 @@ void print_status(const char *status, int is_error)
         /* Error message */
         printf(C_RED "[ERROR] %s\n" C_RESET, status);
     }
+    else if (is_error == 2)
+    {
+        printf(C_GREEN "[INFO] %s\n" C_RESET, status);
+    }
 }
 
 /* Handle unknown command input */
 void print_unknown_command(const char *com)
 {
-    printf("Unknown command:"C_RED " %s\n"C_RESET, com);
+    printf("Unknown command:" C_RED " %s\n" C_RESET, com);
     print_usage();
-} 
+}
