@@ -1,6 +1,11 @@
 #ifndef SYSTEM_OPS_H
 #define SYSTEM_OPS_H
 
+#define MAX_LEN 300
+
+/* Store shell commands */
+char command[MAX_LEN];
+
 /* Update and upgrade the system */
 int handle_update(void);
 

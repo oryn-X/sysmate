@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "system_ops.h"
+#include "ui.h"
+
+int handle_update(void)
+{
+    print_status("Starting system update...", 0);
+
+    strcpy(command, "sudo apt update && sudo apt full-upgrade -y");
+    int result = system(command);
+
+    if (result != 0)
+    {
+        print_status("System update failed.\n", 1);
+        return 1;
+    }
+
+    print_status("System update completed.\n", 0);
+    return 0;
+}
