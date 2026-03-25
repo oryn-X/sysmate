@@ -11,7 +11,7 @@
 #include "system_ops.h"
 #include "ui.h"
 
-/* List files and create .sysmate_index */
+/* List visible directory entries and rebuild .sysmate_index. */
 int handle_ls(void)
 {
     print_mode("ls");
@@ -21,13 +21,12 @@ int handle_ls(void)
     int index = 1;
     FILE *fp = fopen(".sysmate_index", "w");
 
-    /* Check directory open error */
+    /* Stop early if the current directory or index file cannot be opened. */
     if (dir == NULL)
     {
         print_status("Cannot open directory.", 1);
         return 1;
     }
-    /* Check index file open error */
     else if (fp == NULL)
     {
         print_status("Cannot open file.", 1);
@@ -35,10 +34,9 @@ int handle_ls(void)
         return 1;
     }
 
-    /* Read directory entries */
+    /* Skip bookkeeping entries and mirror the displayed list into .sysmate_index. */
     while ((entry = readdir(dir)) != NULL)
     {
-        /* Skip current directory, parent directory, and index file */
         if (strcmp(entry->d_name, ".") == 0 ||
             strcmp(entry->d_name, "..") == 0 ||
             strcmp(entry->d_name, ".sysmate_index") == 0)
@@ -46,25 +44,22 @@ int handle_ls(void)
             continue;
         }
 
-        /* Print file name and save it in index file */
         printf(" %2d | %s\n", index, entry->d_name);
         fprintf(fp, "%d|%s\n", index, entry->d_name);
         index++;
     }
 
-    /* Close opened resources */
     fclose(fp);
     closedir(dir);
 
     return 0;
 }
 
-/* Delete file by index */
+/* Delete the file mapped to the requested index entry. */
 int handle_delete(int target)
 {
     FILE *fp = fopen(".sysmate_index", "r");
 
-    /* Check index file open error */
     if (fp == NULL)
     {
         print_status("Cannot open file.", 1);
@@ -75,11 +70,9 @@ int handle_delete(int target)
     int file_index;
     char file_name[256];
 
-    /* Read index file line by line */
+    /* Parse .sysmate_index as <number>|<name> records until the target entry is found. */
     while (fgets(buffer, sizeof(buffer), fp) != NULL)
     {
-        /* Extract file index and file name */
-
         char *separator = strchr(buffer, '|');
         if (separator == NULL)
         {
@@ -99,13 +92,12 @@ int handle_delete(int target)
             file_name[len - 1] = '\0';
         }
 
-        /* Match the requested index */
         if (file_index == target)
         {
             char ny[8];
             int attempts = 3;
 
-            /* Ask for delete confirmation */
+            /* Give the user a few chances to confirm or cancel the deletion. */
             while (attempts > 0)
             {
 
@@ -126,7 +118,6 @@ int handle_delete(int target)
                     return 1;
                 }
 
-                /* Delete file if user confirms */
                 if (ny[0] == 'y' || ny[0] == 'Y')
                 {
                     if (remove(file_name) == 0)
@@ -151,7 +142,6 @@ int handle_delete(int target)
                         return 1;
                     }
                 }
-                /* Cancel delete if user declines */
                 else if (ny[0] == 'n' || ny[0] == 'N')
                 {
 
@@ -168,7 +158,6 @@ int handle_delete(int target)
                     fclose(fp);
                     return 1;
                 }
-                /* Ask again if input is invalid */
                 else
                 {
                     print_status("Please enter y or n", 1);
@@ -186,18 +175,17 @@ int handle_delete(int target)
         }
     }
 
-    /* Handle missing index */
     print_status("Index not found", 1);
     fclose(fp);
     return 1;
 }
 
+/* Show detailed metadata for the file mapped to an index entry. */
 int handle_info(int target)
 {
 
     FILE *fp = fopen(".sysmate_index", "r");
 
-    /* Check index file open error */
     if (fp == NULL)
     {
         print_status("Cannot open file.", 1);
@@ -219,11 +207,9 @@ int handle_info(int target)
     struct passwd *owner_info;
     struct group *group_info;
 
-    /* Read index file line by line */
+    /* Parse .sysmate_index as <number>|<name> records until the target entry is found. */
     while (fgets(buffer, sizeof(buffer), fp) != NULL)
     {
-        /* Extract file index and file name */
-
         char *separator = strchr(buffer, '|');
         if (separator == NULL)
         {
@@ -243,12 +229,12 @@ int handle_info(int target)
             file_name[len - 1] = '\0';
         }
 
-        /* Match the requested index */
         if (file_index == target)
         {
 
             print_mode("info");
 
+            /* Build an absolute path so lookup and display use the same file location. */
             if (getcwd(current_dir, sizeof(current_dir)) == NULL)
             {
                 print_status("Cannot get current directory", 1);
@@ -258,6 +244,7 @@ int handle_info(int target)
 
             snprintf(full_path, sizeof(full_path), "%s/%s", current_dir, file_name);
 
+            /* Use stat to load filesystem metadata for the selected path. */
             if (stat(full_path, &st) != 0)
             {
                 print_status("Cannot get file information", 1);
@@ -283,6 +270,7 @@ int handle_info(int target)
 
             printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Size" C_RESET "            : " C_ORANGE "%ld bytes\n" C_RESET, st.st_size);
 
+            /* Resolve numeric owner and group IDs into readable account names. */
             owner_info = getpwuid(st.st_uid);
             group_info = getgrgid(st.st_gid);
 
@@ -303,6 +291,7 @@ int handle_info(int target)
                 printf(C_YELLOW "[•]" C_RESET " Group           : " C_RED "Unknown\n" C_RESET);
             }
 
+            /* Build permission text for owner, group, and other access bits. */
             build_permissions(st.st_mode, Permissions_owner, S_IRUSR, S_IWUSR, S_IXUSR);
             build_permissions(st.st_mode, Permissions_group, S_IRGRP, S_IWGRP, S_IXGRP);
             build_permissions(st.st_mode, Permissions_other, S_IROTH, S_IWOTH, S_IXOTH);
@@ -310,6 +299,7 @@ int handle_info(int target)
             printf(C_YELLOW "[•]" C_RESET " Group Perms     : %s\n", Permissions_group);
             printf(C_YELLOW "[•]" C_RESET " Other Perms     : %s\n", Permissions_other);
 
+            /* Format the modification timestamp for display. */
             time_info = localtime(&st.st_mtime);
             if (time_info == NULL)
             {
@@ -325,6 +315,7 @@ int handle_info(int target)
                 return 1;
             }
 
+            /* Count file lines separately because stat does not describe file content. */
             FILE *file_linse = fopen(full_path, "r");
             if (file_linse == NULL)
             {
@@ -355,15 +346,15 @@ int handle_info(int target)
         }
     }
 
-    /* Handle missing index */
     print_status("Index not found", 1);
     fclose(fp);
     return 1;
 }
 
+/* Build a readable permission summary for one permission class. */
 void build_permissions(int mode, char *permissions_text, int read_flag, int write_flag, int exec_flag)
 {
-
+    /* Append granted permissions and add separators only after the first entry. */
     permissions_text[0] = '\0';
 
     if (mode & read_flag)

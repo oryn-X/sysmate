@@ -3,6 +3,7 @@
 
 #define VERSION "1.0.0"
 
+/* Print the full help screen. */
 int print_help(void)
 {
     printf("\033[2J\033[H\n");
@@ -83,6 +84,7 @@ int print_help(void)
     return 0;
 }
 
+/* Print the current application version. */
 int version(void)
 {
     printf("sysmate version %s\n", VERSION);

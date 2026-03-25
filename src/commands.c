@@ -7,6 +7,7 @@
 #include "system_ops.h"
 #include "ui.h"
 
+/* Dispatch the requested command after validating its arguments. */
 int execute_command(int argc, char *argv[])
 {
 
@@ -16,13 +17,11 @@ int execute_command(int argc, char *argv[])
         return 1;
     }
 
-    /* Get the command entered by the user */
+    /* Match the command name and forward control to the right handler. */
     const char *command = argv[1];
 
-    /* Execute system update */
     if (strcmp(command, "update") == 0 || strcmp(command, "-u") == 0)
     {
-        /* Ensure no extra arguments */
         if (argc != 2)
         {
             print_usage();
@@ -31,7 +30,6 @@ int execute_command(int argc, char *argv[])
 
         return handle_update();
     }
-    /* Clean unused packages */
     else if (strcmp(command, "clean") == 0 || strcmp(command, "-c") == 0)
     {
         if (argc != 2)
@@ -42,9 +40,6 @@ int execute_command(int argc, char *argv[])
 
         return handle_clean();
     }
-
-
-    /* List files and build index */
     else if (strcmp(command, "ls") == 0)
     {
         if (argc != 2)
@@ -56,17 +51,15 @@ int execute_command(int argc, char *argv[])
         return handle_ls();
     }
 
-    /* Delete file by index */
     else if (strcmp(command, "delete") == 0 || strcmp(command, "-d") == 0)
     {
-        /* Ensure index argument is provided */
         if (argc != 3)
         {
             print_status("Usage: sysmate delete <number>", 1);
             return 1;
         }
 
-        /* Convert argument to integer */
+        /* Parse the requested index before looking it up in .sysmate_index. */
         char *endptr;
         long value = strtol(argv[2], &endptr, 10);
 
@@ -88,7 +81,7 @@ int execute_command(int argc, char *argv[])
             return 1;
         }
 
-        /* Convert argument to integer */
+        /* Parse the requested index before looking it up in .sysmate_index. */
         char *endptr;
         long value = strtol(argv[2], &endptr, 10);
 
@@ -132,7 +125,6 @@ int execute_command(int argc, char *argv[])
         return handle_gitsync(argv[2]);
     }
 
-    /* Show help menu */
     else if (strcmp(command, "help") == 0 || strcmp(command, "-h") == 0)
     {
         if (argc != 2)
@@ -143,7 +135,6 @@ int execute_command(int argc, char *argv[])
         return print_help();
     }
 
-    /* Show version */
     else if (strcmp(command, "version") == 0 || strcmp(command, "-v") == 0)
     {
         if (argc != 2)
@@ -154,7 +145,6 @@ int execute_command(int argc, char *argv[])
         return version();
     }
 
-    /* Handle unknown command */
     print_unknown_command(argv[1]);
     return 1;
 }

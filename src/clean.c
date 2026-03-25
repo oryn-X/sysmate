@@ -4,7 +4,7 @@
 #include "system_ops.h"
 #include "ui.h"
 
-
+/* Run the cleanup workflow for packages, logs, and caches. */
 int handle_clean(void)
 {
     print_mode("clean");
@@ -46,7 +46,7 @@ int handle_clean(void)
 }
 
 
-/* Run in CMD */
+/* Run a command and report failures through the shared UI. */
 int run_system(const char *msg, const char *cmd)
 {
 
@@ -63,7 +63,7 @@ int run_system(const char *msg, const char *cmd)
     return 0;       
 }
 
-/* For Warning messages */
+/* Run an informational command and warn if it fails. */
 int run_info(const char *msg, const char *cmd)
 {
     print_status(msg, 0);

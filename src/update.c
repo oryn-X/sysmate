@@ -5,6 +5,7 @@
 #include "system_ops.h"
 #include "ui.h"
 
+/* Run the system update and upgrade workflow. */
 int handle_update(void)
 {
     char command[MAX_LEN];

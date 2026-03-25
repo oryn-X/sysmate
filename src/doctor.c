@@ -11,6 +11,7 @@ int doctor_pass;
 int doctor_missing;
 char doctor_missing_packages[2024];
 
+/* Check common native development tools. */
 int handle_doctor_dev(void)
 {
 
@@ -20,18 +21,17 @@ int handle_doctor_dev(void)
     print_status("Checking development tools...", 0);
     printf("──────────────────────────────────\n");
 
-    // ===== Core Build Tools =====
+    /* Check the core build, version control, and scripting tools used in local dev setups. */
     run_doctor("gcc        : C compiler", "which gcc > /dev/null 2>&1", "gcc");
     run_doctor("g++        : C++ compiler", "which g++ > /dev/null 2>&1", "g++");
     run_doctor("make       : build system", "which make > /dev/null 2>&1", "make");
-    // ===== Version Control =====
     run_doctor("git        : version control", "which git > /dev/null 2>&1", "git");
-    // ===== Scripting & Tools =====
     run_doctor("python3    : scripting", "which python3 > /dev/null 2>&1", "python3");
     run_doctor("pip3       : python packages", "which pip3 > /dev/null 2>&1", "python3-pip");
-    // ===== Summary Table =====
     return doctor_print_summary();
 }
+
+/* Check common web development tools. */
 int handle_doctor_web(void)
 {
 
@@ -41,25 +41,17 @@ int handle_doctor_web(void)
     print_status("Checking development tools...", 0);
     printf("──────────────────────────────────\n");
 
-    // ===== Core Build Tools =====
-    // ===== Core Web Development =====
+    /* Check the runtime, package, networking, and container tools used for web work. */
     run_doctor("node       : JavaScript runtime", "which node > /dev/null 2>&1", "nodejs");
     run_doctor("npm        : package manager", "which npm > /dev/null 2>&1", "npm");
     run_doctor("npx        : package runner", "which npx > /dev/null 2>&1", "npm");
-
-    // ===== Version Control =====
     run_doctor("git        : version control", "which git > /dev/null 2>&1", "git");
-
-    // ===== HTTP / Networking =====
     run_doctor("curl       : HTTP client", "which curl > /dev/null 2>&1", "curl");
-
-    // ===== Database / Containers =====
     run_doctor("docker     : containers", "which docker > /dev/null 2>&1", "docker.io");
-
-    // ===== Summary Table =====
     return doctor_print_summary();
 }
 
+/* Run one doctor check and update the summary counters. */
 int run_doctor(const char *msg, const char *cmd, const char *package)
 {
     doctor_total++;
@@ -91,6 +83,7 @@ int run_doctor(const char *msg, const char *cmd, const char *package)
     return 0;
 }
 
+/* Reset doctor counters before a new scan. */
 void doctor_init(void)
 {
 
@@ -100,6 +93,7 @@ void doctor_init(void)
     doctor_missing_packages[0] = '\0';
 }
 
+/* Print doctor results and optionally install missing packages. */
 int doctor_print_summary()
 {
 
@@ -114,6 +108,7 @@ int doctor_print_summary()
     {
         char ny[8];
 
+        /* Offer to install every missing package in one apt command. */
         printf("Do you want to install the missing packages? (Y/N): ");
 
         if (fgets(ny, sizeof(ny), stdin) == NULL)

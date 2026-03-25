@@ -5,6 +5,7 @@
 #include "system_ops.h"
 #include "ui.h"
 
+/* Stage, commit, rebase, and push the current repository. */
 int handle_gitsync(const char *message)
 {
     char command[MAX_LEN];
@@ -25,11 +26,13 @@ int handle_gitsync(const char *message)
     {
         printf("Commit message: %s\n", message);
 
+        /* Stage all pending changes before creating the commit. */
         if (run_system("Staging files" C_RESET, "git add .") != 0)
         {
             return 1;
         }
 
+        /* Build the commit command from the user-supplied message. */
         strcpy(command, "git commit -m \"");
         strcat(command, message);
         strcat(command, "\"");
@@ -38,6 +41,7 @@ int handle_gitsync(const char *message)
         {
             return 1;
         }
+        /* Rebase on the latest remote changes, then push the updated branch. */
         if (run_system("Pulling latest changes" C_RESET, "git pull --rebase") != 0)
         {
             return 1;
