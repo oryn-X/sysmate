@@ -27,7 +27,7 @@ char command[MAX_LEN];
 
         if (run_system("Staging files" C_RESET, "git add .") != 0)
         {
-            return 1;   
+            return 1;
         }
 
         strcpy(command, "git commit -m \"");
