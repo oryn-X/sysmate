@@ -21,12 +21,12 @@ void print_status(const char *status, int is_error)
     if (is_error == 0)
     {
         /* Success message */
-        printf(C_GREEN "%s\n" C_RESET, status);
+        printf(C_GREEN "[OK] %s\n" C_RESET, status);
     }
     else if (is_error == 1)
     {
         /* Error message */
-        printf(C_RED "%s\n" C_RESET, status);
+        printf(C_RED "[ERROR] %s\n" C_RESET, status);
     }
     else if (is_error == 2)
     {
