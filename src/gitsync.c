@@ -7,7 +7,7 @@
 
 int handle_gitsync(const char *message)
 {
-char command[MAX_LEN];
+    char command[MAX_LEN];
 
     print_mode("gitsync");
 
@@ -34,23 +34,21 @@ char command[MAX_LEN];
         strcat(command, message);
         strcat(command, "\"");
 
-        if (run_system("Creating commit"C_RESET, command) != 0)
+        if (run_system("Creating commit" C_RESET, command) != 0)
         {
             return 1;
         }
-        if (run_system("Pulling latest changes"C_RESET, "git pull --rebase") != 0)
+        if (run_system("Pulling latest changes" C_RESET, "git pull --rebase") != 0)
         {
             return 1;
         }
-         if (run_system("Pushing changes"C_RESET, "git push") != 0)
+        if (run_system("Pushing changes" C_RESET, "git push") != 0)
         {
             return 1;
         }
 
         print_status("Git sync completed successfully", 0);
-
         return 0;
     }
 
-    return 0;
 }
