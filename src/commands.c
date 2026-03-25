@@ -92,6 +92,19 @@ int execute_command(int argc, char *argv[])
         return handle_doctor_dev();
     }
 
+    if (strcmp(command, "doctor-web") == 0 || strcmp(command, "-dw") == 0)
+    {
+        if (argc != 2)
+        {
+           print_status("Usage: Sysmate doctor <option>", 1);
+            return 1;
+        }
+
+        return handle_doctor_web();
+        
+    }
+    
+
     /* Show help menu */
     else if (strcmp(command, "help") == 0 || strcmp(command, "-h") == 0)
     {

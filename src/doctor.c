@@ -5,20 +5,16 @@
 #include "system_ops.h"
 #include "ui.h"
 
+char command[MAX_LEN];
 int doctor_total;
 int doctor_pass;
 int doctor_missing;
 char doctor_missing_packages[2024];
 
-
 int handle_doctor_dev(void)
 {
-    char command[MAX_LEN];
-    doctor_total = 0;
-    doctor_pass = 0;
-    doctor_missing = 0;
-    doctor_missing_packages[0] = '\0';
 
+    doctor_init();
     print_mode("doctor-dev  ");
     printf("\n");
     print_status("Checking development tools...", 0);
@@ -34,15 +30,90 @@ int handle_doctor_dev(void)
     run_doctor("python3    -> scripting", "which python3 > /dev/null 2>&1", "python3");
     run_doctor("pip3       -> python packages", "which pip3 > /dev/null 2>&1", "python3-pip");
     // ===== Summary Table =====
+    return doctor_print_summary();
+}
+int handle_doctor_web(void)
+{
+
+
+        doctor_init();
+    print_mode("doctor-dev  ");
+    printf("\n");
+    print_status("Checking development tools...", 0);
+    printf("──────────────────────────────────\n");
+
+    // ===== Core Build Tools =====
+    // ===== Core Web Development =====
+    run_doctor("node       -> JavaScript runtime", "which node > /dev/null 2>&1", "nodejs");
+    run_doctor("npm        -> package manager", "which npm > /dev/null 2>&1", "npm");
+    run_doctor("npx        -> package runner", "which npx > /dev/null 2>&1", "npm");
+
+    // ===== Version Control =====
+    run_doctor("git        -> version control", "which git > /dev/null 2>&1", "git");
+
+    // ===== HTTP / Networking =====
+    run_doctor("curl       -> HTTP client", "which curl > /dev/null 2>&1", "curl");
+
+    // ===== Database / Containers =====
+    run_doctor("docker     -> containers", "which docker > /dev/null 2>&1", "docker.io");
+    
+
+    // ===== Summary Table =====
+    return doctor_print_summary();
+
+   
+}
+
+int run_doctor(const char *msg, const char *cmd, const char *package)
+{
+    doctor_total++;
+    int result = system(cmd);
+    if (result != 0)
+    {
+        printf("[ " C_RED "FAIL" C_RESET " ] ");
+        print_status(msg, 1);
+        if (doctor_missing_packages[0] == '\0')
+        {
+            strcpy(doctor_missing_packages, package);
+        }
+        else
+        {
+            strcat(doctor_missing_packages, " ");
+            strcat(doctor_missing_packages, package);
+        }
+
+        doctor_missing++;
+        return 1;
+    }
+    else
+    {
+        printf("[ " C_GREEN "PASS" C_RESET " ] ");
+        print_status(msg, 2);
+        doctor_pass++;
+    }
+
+    return 0;
+}
+
+void doctor_init(void)
+{
+
+    doctor_total = 0;
+    doctor_pass = 0;
+    doctor_missing = 0;
+    doctor_missing_packages[0] = '\0';
+}
+
+int doctor_print_summary()
+{
+
     printf("\n");
     printf("╭─ Final Summary ──────────────────────────╮\n");
     printf("│ Checks:   %-30d │\n", doctor_total);
     printf("│ Passed:   %-30d │\n", doctor_pass);
     printf("│ Missing:  %-30d │\n", doctor_missing);
     printf("╰──────────────────────────────────────────╯\n");
-
     printf(C_RED " %s\n" C_RESET, doctor_missing_packages);
-
     if (doctor_missing > 0)
     {
         char ny[8];
@@ -82,35 +153,4 @@ int handle_doctor_dev(void)
     {
         return 0;
     }
-}
-
-int run_doctor(const char *msg, const char *cmd, const char *package)
-{
-    doctor_total++;
-    int result = system(cmd);
-    if (result != 0)
-    {
-        printf("[ " C_RED "FAIL" C_RESET " ] ");
-        print_status(msg, 1);
-        if (doctor_missing_packages[0] == '\0')
-        {
-            strcpy(doctor_missing_packages, package);
-        }
-        else
-        {
-            strcat(doctor_missing_packages, " ");
-            strcat(doctor_missing_packages, package);
-        }
-
-        doctor_missing++;
-        return 1;
-    }
-    else
-    {
-        printf("[ " C_GREEN "PASS" C_RESET " ] ");
-        print_status(msg, 2);
-        doctor_pass++;
-    }
-
-    return 0;
 }

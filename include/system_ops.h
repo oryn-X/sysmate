@@ -2,26 +2,31 @@
 #define SYSTEM_OPS_H
 #define MAX_LEN 300
 
-/* Store shell commands */
-extern 
+
+
 
 /* Update and upgrade the system */
 int handle_update(void);
 
 /* Clean unused packages and cache */
 int handle_clean(void);
+int run_info (const char *msg, const char *cmd);
+int run_system(const char *msg, const char *cmd);
+
+
 
 /* List files and create index file */
-int handle_ls(void);
-
 /* Delete file by index */
+int handle_ls(void);
 int handle_delete(int target);
+
 
 /* Run in CMD */
 int handle_doctor_dev(void);
-int run_system(const char *msg, const char *cmd);
+int handle_doctor_web(void);
 int run_doctor(const char *msg, const char *cmd,const char *package);
-int run_info (const char *msg, const char *cmd);
+void doctor_init(void);
+int doctor_print_summary();
 
 
 #endif
