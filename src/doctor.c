@@ -21,14 +21,14 @@ int handle_doctor_dev(void)
     printf("──────────────────────────────────\n");
 
     // ===== Core Build Tools =====
-    run_doctor("gcc        -> C compiler", "which gcc > /dev/null 2>&1", "gcc");
-    run_doctor("g++        -> C++ compiler", "which g++ > /dev/null 2>&1", "g++");
-    run_doctor("make       -> build system", "which make > /dev/null 2>&1", "make");
+    run_doctor("gcc        : C compiler", "which gcc > /dev/null 2>&1", "gcc");
+    run_doctor("g++        : C++ compiler", "which g++ > /dev/null 2>&1", "g++");
+    run_doctor("make       : build system", "which make > /dev/null 2>&1", "make");
     // ===== Version Control =====
-    run_doctor("git        -> version control", "which git > /dev/null 2>&1", "git");
+    run_doctor("git        : version control", "which git > /dev/null 2>&1", "git");
     // ===== Scripting & Tools =====
-    run_doctor("python3    -> scripting", "which python3 > /dev/null 2>&1", "python3");
-    run_doctor("pip3       -> python packages", "which pip3 > /dev/null 2>&1", "python3-pip");
+    run_doctor("python3    : scripting", "which python3 > /dev/null 2>&1", "python3");
+    run_doctor("pip3       : python packages", "which pip3 > /dev/null 2>&1", "python3-pip");
     // ===== Summary Table =====
     return doctor_print_summary();
 }
@@ -43,18 +43,18 @@ int handle_doctor_web(void)
 
     // ===== Core Build Tools =====
     // ===== Core Web Development =====
-    run_doctor("node       -> JavaScript runtime", "which node > /dev/null 2>&1", "nodejs");
-    run_doctor("npm        -> package manager", "which npm > /dev/null 2>&1", "npm");
-    run_doctor("npx        -> package runner", "which npx > /dev/null 2>&1", "npm");
+    run_doctor("node       : JavaScript runtime", "which node > /dev/null 2>&1", "nodejs");
+    run_doctor("npm        : package manager", "which npm > /dev/null 2>&1", "npm");
+    run_doctor("npx        : package runner", "which npx > /dev/null 2>&1", "npm");
 
     // ===== Version Control =====
-    run_doctor("git        -> version control", "which git > /dev/null 2>&1", "git");
+    run_doctor("git        : version control", "which git > /dev/null 2>&1", "git");
 
     // ===== HTTP / Networking =====
-    run_doctor("curl       -> HTTP client", "which curl > /dev/null 2>&1", "curl");
+    run_doctor("curl       : HTTP client", "which curl > /dev/null 2>&1", "curl");
 
     // ===== Database / Containers =====
-    run_doctor("docker     -> containers", "which docker > /dev/null 2>&1", "docker.io");
+    run_doctor("docker     : containers", "which docker > /dev/null 2>&1", "docker.io");
 
     // ===== Summary Table =====
     return doctor_print_summary();
@@ -84,7 +84,7 @@ int run_doctor(const char *msg, const char *cmd, const char *package)
     else
     {
         printf("[ " C_GREEN "PASS" C_RESET " ] ");
-        print_status(msg, 2);
+        print_status(msg, 3);
         doctor_pass++;
     }
 

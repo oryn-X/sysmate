@@ -32,6 +32,10 @@ void print_status(const char *status, int is_error)
     {
         printf(C_GREEN "[INFO] %s\n" C_RESET, status);
     }
+    else if (is_error == 3)
+    {
+        printf(" %s\n", status);
+    }
 }
 
 /* Handle unknown command input */

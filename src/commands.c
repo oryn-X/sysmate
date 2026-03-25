@@ -42,10 +42,7 @@ int execute_command(int argc, char *argv[])
 
         return handle_clean();
     }
-    else if (strcmp(command, "refresh") == 0 || strcmp(command, "-ref") == 0)
-    {
-        /* code */
-    }
+
 
     /* List files and build index */
     else if (strcmp(command, "ls") == 0)
@@ -82,6 +79,29 @@ int execute_command(int argc, char *argv[])
         int target = (int)value;
         return handle_delete(target);
     }
+
+    else if (strcmp(command, "info") == 0 || strcmp(command, "-in") == 0)
+    {
+                if (argc != 3)
+        {
+            print_status("Usage: sysmate delete <number>", 1);
+            return 1;
+        }
+
+        /* Convert argument to integer */
+        char *endptr;
+        long value = strtol(argv[2], &endptr, 10);
+
+        if (*endptr != '\0' || value < 1)
+        {
+            print_status("Invalid index", 1);
+            return 1;
+        }
+
+        int target = (int)value;
+        return handle_info(target);
+    }
+
     else if (strcmp(command, "doctor-dev") == 0 || strcmp(command, "-dd") == 0)
     {
         if (argc != 2)
@@ -105,6 +125,7 @@ int execute_command(int argc, char *argv[])
     {
         if (argc != 3)
         {
+            print_status("Usage: Sysmate gitsync <commit>", 1);
             print_usage();
             return 1;
         }
