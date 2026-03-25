@@ -42,6 +42,12 @@ char command[MAX_LEN];
         {
             return 1;
         }
+         if (run_system("Pushing changes"C_RESET, "git push") != 0)
+        {
+            return 1;
+        }
+
+        print_status("Git sync completed successfully", 0);
 
         return 0;
     }
