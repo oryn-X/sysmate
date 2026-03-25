@@ -41,11 +41,11 @@ int execute_command(int argc, char *argv[])
         }
 
         return handle_clean();
-    }else if (strcmp(command, "refresh") == 0 || strcmp(command, "-ref") == 0)
+    }
+    else if (strcmp(command, "refresh") == 0 || strcmp(command, "-ref") == 0)
     {
         /* code */
     }
-    
 
     /* List files and build index */
     else if (strcmp(command, "ls") == 0)
@@ -91,19 +91,25 @@ int execute_command(int argc, char *argv[])
         }
         return handle_doctor_dev();
     }
-
-    if (strcmp(command, "doctor-web") == 0 || strcmp(command, "-dw") == 0)
+    else if (strcmp(command, "doctor-web") == 0 || strcmp(command, "-dw") == 0)
     {
         if (argc != 2)
         {
-           print_status("Usage: Sysmate doctor <option>", 1);
+            print_status("Usage: Sysmate doctor <option>", 1);
             return 1;
         }
 
         return handle_doctor_web();
-        
     }
-    
+    else if (strcmp(command, "gitsync") == 0 || strcmp(command, "-gs") == 0)
+    {
+        if (argc != 3)
+        {
+            print_usage();
+            return 1;
+        }
+        return handle_gitsync(argv[2]);
+    }
 
     /* Show help menu */
     else if (strcmp(command, "help") == 0 || strcmp(command, "-h") == 0)

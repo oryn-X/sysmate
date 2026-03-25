@@ -35,8 +35,7 @@ int handle_doctor_dev(void)
 int handle_doctor_web(void)
 {
 
-
-        doctor_init();
+    doctor_init();
     print_mode("doctor-dev  ");
     printf("\n");
     print_status("Checking development tools...", 0);
@@ -56,12 +55,9 @@ int handle_doctor_web(void)
 
     // ===== Database / Containers =====
     run_doctor("docker     -> containers", "which docker > /dev/null 2>&1", "docker.io");
-    
 
     // ===== Summary Table =====
     return doctor_print_summary();
-
-   
 }
 
 int run_doctor(const char *msg, const char *cmd, const char *package)

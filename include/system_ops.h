@@ -29,4 +29,10 @@ void doctor_init(void);
 int doctor_print_summary();
 
 
+
+
+int handle_gitsync(const char *msg);
+
+
+
 #endif
