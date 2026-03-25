@@ -12,7 +12,7 @@ void print_usage(void)
 /* Print current mode (e.g., ls, clean) */
 void print_mode(const char *mode)
 {
-    printf(C_BPURPLE "[INFO] Mode: %s\n" C_RESET, mode);
+    printf(C_CYAN "[MODE] %s\n" C_RESET, mode);
 }
 
 /* Print status message (success or error) */
@@ -27,10 +27,6 @@ void print_status(const char *status, int is_error)
     {
         /* Error message */
         printf(C_RED "[ERROR] %s\n" C_RESET, status);
-    }
-    else if (is_error == 2)
-    {
-        printf( "%s\n", status);
     }
 }
 
