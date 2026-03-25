@@ -7,6 +7,7 @@
 
 int handle_update(void)
 {
+    char command[MAX_LEN];
     print_status("Starting system update...", 0);
 
     strcpy(command, "sudo apt update && sudo apt full-upgrade -y");

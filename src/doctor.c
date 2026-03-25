@@ -13,6 +13,7 @@ char doctor_missing_packages[2024];
 
 int handle_doctor_dev(void)
 {
+    char command[MAX_LEN];
     doctor_total = 0;
     doctor_pass = 0;
     doctor_missing = 0;
