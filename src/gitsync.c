@@ -25,7 +25,7 @@ char command[MAX_LEN];
     {
         printf("Commit message: %s\n", message);
 
-        if (run_system("Staging files", "git add .") != 0)
+        if (run_system("Staging files" C_RESET, "git add .") != 0)
         {
             return 1;
         }
@@ -34,11 +34,11 @@ char command[MAX_LEN];
         strcat(command, message);
         strcat(command, "\"");
 
-        if (run_system("Creating commit", command) != 0)
+        if (run_system("Creating commit"C_RESET, command) != 0)
         {
             return 1;
         }
-        if (run_system("Pulling latest changes", "git pull --rebase") != 0)
+        if (run_system("Pulling latest changes"C_RESET, "git pull --rebase") != 0)
         {
             return 1;
         }
