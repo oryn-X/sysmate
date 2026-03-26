@@ -20,7 +20,7 @@ int run_system(const char *msg, const char *cmd);
 int handle_ls(void);
 int handle_delete(int target);
 int handle_info(int target);
-void build_permissions(int mode,char *permissions_text, int read_flag,int write_flag, int exec_flag);
+void build_permissions(int mode,char *permissions_text, int read_flag, int write_flag, int exec_flag);
 
 
 

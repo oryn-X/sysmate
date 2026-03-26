@@ -17,7 +17,6 @@ int handle_doctor_dev(void)
 
     doctor_init();
     print_mode("doctor-dev  ");
-    printf("\n");
     print_status("Checking development tools...", 0);
     printf("──────────────────────────────────\n");
 

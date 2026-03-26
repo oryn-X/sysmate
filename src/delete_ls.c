@@ -44,7 +44,7 @@ int handle_ls(void)
             continue;
         }
 
-        printf(" %2d | %s\n", index, entry->d_name);
+        printf(C_YELLOW "[%d]" C_RESET " " C_WHITE "%s\n" C_RESET, index, entry->d_name);
         fprintf(fp, "%d|%s\n", index, entry->d_name);
         index++;
     }
@@ -334,8 +334,10 @@ int handle_info(int target)
             }
             else
             {
-
-                printf(C_YELLOW "[•]" C_RESET " Line Count      : " C_SKY "N/A\n" C_RESET);
+                if (S_ISREG(st.st_mode))
+                {
+                    printf(C_YELLOW "[•]" C_RESET " Line Count      : " C_SKY "N/A\n" C_RESET);
+                }
             }
 
             printf(C_YELLOW "[•]" C_RESET " Last Modified   : " C_ROSE "%s\n" C_RESET, last_modified);
