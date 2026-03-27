@@ -48,7 +48,7 @@ int execute_command(int argc, char *argv[])
             return 1;
         }
 
-        return handle_ls();
+        return handle_ls(0);
     }
 
     else if (strcmp(command, "delete") == 0 || strcmp(command, "-d") == 0)
@@ -123,7 +123,18 @@ int execute_command(int argc, char *argv[])
             return 1;
         }
         return handle_gitsync(argv[2]);
+    }else if (strcmp(command, "ls-l") == 0)
+    {
+        if (argc != 2)
+        {
+            print_usage();
+            return 1;
+        }
+
+        return handle_ls_long();
+        
     }
+    
 
     else if (strcmp(command, "help") == 0 || strcmp(command, "-h") == 0)
     {

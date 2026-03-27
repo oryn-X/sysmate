@@ -33,6 +33,7 @@
 #define C_DARK_PURPLE   "\033[38;5;54m"
 #define C_DARK_CYAN     "\033[38;5;30m"
 #define C_GRAY          "\033[38;5;245m"
+#define C_BPURPLE "\033[1;35m"
 
 /* Special nice color */
 #define C_INDIGO        "\033[38;5;99m"

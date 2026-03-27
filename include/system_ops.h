@@ -17,10 +17,11 @@ int run_system(const char *msg, const char *cmd);
 
 /* List files and create index file */
 /* Delete file by index */
-int handle_ls(void);
+int handle_ls(int show_output);
 int handle_delete(int target);
 int handle_info(int target);
 void build_permissions(int mode,char *permissions_text, int read_flag, int write_flag, int exec_flag);
+
 
 
 
@@ -33,8 +34,14 @@ int doctor_print_summary();
 
 
 
-
 int handle_gitsync(const char *msg);
+
+
+
+
+
+int handle_ls_long(void);
+void build_perm_ls_long(int mode, char *permissions_text, int read_flag, int write_flag, int exec_flag);
 
 
 

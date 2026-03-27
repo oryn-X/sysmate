@@ -12,9 +12,13 @@
 #include "ui.h"
 
 /* List visible directory entries and rebuild .sysmate_index. */
-int handle_ls(void)
+int handle_ls(int show_output)
 {
-    print_mode("ls");
+
+    if (show_output == 0)
+    {
+        print_mode("ls");
+    }
 
     DIR *dir = opendir(".");
     struct dirent *entry;
@@ -44,7 +48,11 @@ int handle_ls(void)
             continue;
         }
 
-        printf(C_YELLOW "[%d]" C_RESET " " C_WHITE "%s\n" C_RESET, index, entry->d_name);
+        if (show_output == 0)
+        {
+            printf(C_YELLOW "[%d]" C_RESET " " C_WHITE "%s\n" C_RESET, index, entry->d_name);
+        }
+
         fprintf(fp, "%d|%s\n", index, entry->d_name);
         index++;
     }
@@ -114,7 +122,7 @@ int handle_delete(int target)
                 {
                     print_status("Input error", 1);
                     fclose(fp);
-                    handle_ls();
+                    handle_ls(0);
                     return 1;
                 }
 
@@ -259,7 +267,7 @@ int handle_info(int target)
             {
                 printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Type" C_RESET "            : " C_SKY "Directory\n" C_RESET);
             }
-            else if (S_ISREG(st.st_mode))
+            if (S_ISREG(st.st_mode))
             {
                 printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Type" C_RESET "            : " C_MINT "File\n" C_RESET);
             }
