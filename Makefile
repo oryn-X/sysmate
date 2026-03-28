@@ -46,3 +46,4 @@ help:
 	@echo "  make install-user  Install sysmate for current user"
 	@echo "  make uninstall-user Remove user installation"
 	rm -f build
+ 
