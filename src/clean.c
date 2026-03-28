@@ -41,7 +41,7 @@ int handle_clean(void)
     if (clean_failed)
         return 1;
 
-    print_status("System cleaned successfully.\n", 0);
+    print_status("System cleaned successfully.\n", STATUS_OK);
     return 0;
 }
 
@@ -50,13 +50,13 @@ int handle_clean(void)
 int run_system(const char *msg, const char *cmd)
 {
 
-    print_status(msg, 2);
+    print_status(msg, STATUS_OK);
 
     int result = system(cmd);
 
     if (result != 0)
     {
-        print_status("[FAILED]\n", 1);
+        print_status("[FAILED]\n", STATUS_ERROR);
         return 1;
     }
 
@@ -66,7 +66,7 @@ int run_system(const char *msg, const char *cmd)
 /* Run an informational command and warn if it fails. */
 int run_info(const char *msg, const char *cmd)
 {
-    print_status(msg, 0);
+    print_status(msg, STATUS_OK);
     int result = system(cmd);
 
     if (result != 0)

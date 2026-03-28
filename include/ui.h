@@ -38,6 +38,16 @@
 /* Special nice color */
 #define C_INDIGO        "\033[38;5;99m"
 
+/* Shared status kinds */
+#define STATUS_OK       0
+#define STATUS_ERROR    1
+#define STATUS_INFO     2
+#define STATUS_PLAIN    3
+#define STATUS_WARN     4
+#define STATUS_TIP      5
+
+
+
 /* Print basic usage instructions */
 void print_usage(void);
 

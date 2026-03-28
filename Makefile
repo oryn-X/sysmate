@@ -36,7 +36,7 @@ install-user: $(TARGET)
 
 uninstall-user:
 	rm -f $(USER_INSTALL_PATH)/sysmate
-	@echo "Removed from $(USER_INSTALL_PATH)"
+	@echo "Removed from $(USER_INSTALL_PATH)"   	
 
 help:
 	@echo "Available targets:"

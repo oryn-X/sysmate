@@ -28,12 +28,12 @@ int handle_ls(int show_output)
     /* Stop early if the current directory or index file cannot be opened. */
     if (dir == NULL)
     {
-        print_status("Cannot open directory.", 1);
+        print_status("Cannot open directory.", STATUS_ERROR);
         return 1;
     }
     else if (fp == NULL)
     {
-        print_status("Cannot open file.", 1);
+        print_status("Cannot open file.", STATUS_ERROR);
         closedir(dir);
         return 1;
     }
@@ -70,7 +70,7 @@ int handle_delete(int target)
 
     if (fp == NULL)
     {
-        print_status("Cannot open file.", 1);
+        print_status("Cannot open file.", STATUS_ERROR);
         return 1;
     }
 
@@ -120,7 +120,7 @@ int handle_delete(int target)
 
                 if (fgets(ny, sizeof(ny), stdin) == NULL)
                 {
-                    print_status("Input error", 1);
+                    print_status("Input error", STATUS_ERROR);
                     fclose(fp);
                     handle_ls(0);
                     return 1;
@@ -145,7 +145,7 @@ int handle_delete(int target)
                     }
                     else
                     {
-                        print_status("Failed to delete file", 1);
+                        print_status("Failed to delete file", STATUS_ERROR);
                         fclose(fp);
                         return 1;
                     }
@@ -168,13 +168,13 @@ int handle_delete(int target)
                 }
                 else
                 {
-                    print_status("Please enter y or n", 1);
+                    print_status("Please enter y or n", STATUS_ERROR);
                     attempts--;
                     printf("Attempts left: %d\n", attempts);
 
                     if (attempts == 0)
                     {
-                        print_status("Sorry, the attempts have ended.", 1);
+                        print_status("Sorry, the attempts have ended.", STATUS_ERROR);
                         fclose(fp);
                         return 1;
                     }
@@ -183,7 +183,7 @@ int handle_delete(int target)
         }
     }
 
-    print_status("Index not found", 1);
+    print_status("Index not found", STATUS_ERROR);
     fclose(fp);
     return 1;
 }
@@ -196,7 +196,7 @@ int handle_info(int target)
 
     if (fp == NULL)
     {
-        print_status("Cannot open file.", 1);
+        print_status("Cannot open file.", STATUS_ERROR);
         return 1;
     }
 
@@ -245,7 +245,7 @@ int handle_info(int target)
             /* Build an absolute path so lookup and display use the same file location. */
             if (getcwd(current_dir, sizeof(current_dir)) == NULL)
             {
-                print_status("Cannot get current directory", 1);
+                print_status("Cannot get current directory", STATUS_ERROR);
                 fclose(fp);
                 return 1;
             }
@@ -255,28 +255,35 @@ int handle_info(int target)
             /* Use stat to load filesystem metadata for the selected path. */
             if (stat(full_path, &st) != 0)
             {
-                print_status("Cannot get file information", 1);
+                print_status("Cannot get file information", STATUS_ERROR);
                 fclose(fp);
                 return 1;
             }
 
-            printf(C_YELLOW "[•]" C_RESET " Name            : " C_BLUE "%s\n" C_RESET, file_name);
-            printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Path" C_RESET "            : " C_CYAN "%s\n" C_RESET, full_path);
+            printf(C_YELLOW "[•]" C_RESET C_WHITE" Name            : " C_RESET "%s\n", file_name);
+            printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Path"
+                            "            : " C_RESET C_CYAN "%s\n" C_RESET,
+                   full_path);
 
             if (S_ISDIR(st.st_mode))
             {
-                printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Type" C_RESET "            : " C_SKY "Directory\n" C_RESET);
+                printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Type"
+                                "            : " C_RESET "Directory\n");
             }
-            if (S_ISREG(st.st_mode))
+            else if (S_ISREG(st.st_mode))
             {
-                printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Type" C_RESET "            : " C_MINT "File\n" C_RESET);
+                printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Type"
+                                "            : " C_RESET "File\n");
             }
             else
             {
-                printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Type" C_RESET "            : " C_ORANGE "Other\n" C_RESET);
+                printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Type"
+                                "            : " C_RESET "Other\n");
             }
 
-            printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Size" C_RESET "            : " C_ORANGE "%ld bytes\n" C_RESET, st.st_size);
+            printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Size"
+                            "            : " C_RESET "%ld bytes\n",
+                   st.st_size);
 
             /* Resolve numeric owner and group IDs into readable account names. */
             owner_info = getpwuid(st.st_uid);
@@ -284,41 +291,41 @@ int handle_info(int target)
 
             if (owner_info != NULL)
             {
-                printf(C_YELLOW "[•]" C_RESET " Owner           : " C_INDIGO "%s\n" C_RESET, owner_info->pw_name);
+                printf(C_YELLOW "[•]" C_RESET C_WHITE " Owner           : " C_RESET "%s\n", owner_info->pw_name);
             }
             else
             {
-                printf(C_YELLOW "[•]" C_RESET " Owner           : " C_RED "Unknown\n" C_RESET);
+                printf(C_YELLOW "[•]" C_RESET C_WHITE " Owner           : " C_RED "Unknown\n" C_RESET);
             }
             if (group_info != NULL)
             {
-                printf(C_YELLOW "[•]" C_RESET " Group           : " C_INDIGO "%s\n" C_RESET, group_info->gr_name);
+                printf(C_YELLOW "[•]" C_RESET C_WHITE " Group           : " C_RESET "%s\n", group_info->gr_name);
             }
             else
             {
-                printf(C_YELLOW "[•]" C_RESET " Group           : " C_RED "Unknown\n" C_RESET);
+                printf(C_YELLOW "[•]" C_RESET C_WHITE " Group           : " C_RED "Unknown\n" C_RESET);
             }
 
             /* Build permission text for owner, group, and other access bits. */
             build_permissions(st.st_mode, Permissions_owner, S_IRUSR, S_IWUSR, S_IXUSR);
             build_permissions(st.st_mode, Permissions_group, S_IRGRP, S_IWGRP, S_IXGRP);
             build_permissions(st.st_mode, Permissions_other, S_IROTH, S_IWOTH, S_IXOTH);
-            printf(C_YELLOW "[•]" C_RESET " Owner Perms     : %s\n", Permissions_owner);
-            printf(C_YELLOW "[•]" C_RESET " Group Perms     : %s\n", Permissions_group);
-            printf(C_YELLOW "[•]" C_RESET " Other Perms     : %s\n", Permissions_other);
+            printf(C_YELLOW "[•]" C_RESET C_WHITE " Owner Perms     : %s\n" C_RESET, Permissions_owner);
+            printf(C_YELLOW "[•]" C_RESET C_WHITE " Group Perms     : %s\n" C_RESET, Permissions_group);
+            printf(C_YELLOW "[•]" C_RESET C_WHITE " Other Perms     : %s\n" C_RESET, Permissions_other);
 
             /* Format the modification timestamp for display. */
             time_info = localtime(&st.st_mtime);
             if (time_info == NULL)
             {
-                print_status("Cannot format modification time", 1);
+                print_status("Cannot format modification time", STATUS_ERROR);
                 fclose(fp);
                 return 1;
             }
 
             if (strftime(last_modified, sizeof(last_modified), "%Y-%m-%d %H:%M", time_info) == 0)
             {
-                print_status("Cannot build modification time", 1);
+                print_status("Cannot build modification time", STATUS_ERROR);
                 fclose(fp);
                 return 1;
             }
@@ -327,7 +334,7 @@ int handle_info(int target)
             FILE *file_linse = fopen(full_path, "r");
             if (file_linse == NULL)
             {
-                print_status("Cannot open file.", 1);
+                print_status("Cannot open file.", STATUS_ERROR);
                 return 1;
             }
 
@@ -338,17 +345,17 @@ int handle_info(int target)
 
             if (line_count != 0)
             {
-                printf(C_YELLOW "[•]" C_RESET " Line Count      : " C_SKY "%d\n" C_RESET, line_count);
+                printf(C_YELLOW "[•]" C_RESET C_WHITE " Line Count      : " C_RESET "%d\n", line_count);
             }
             else
             {
                 if (S_ISREG(st.st_mode))
                 {
-                    printf(C_YELLOW "[•]" C_RESET " Line Count      : " C_SKY "N/A\n" C_RESET);
+                    printf(C_YELLOW "[•]" C_RESET C_WHITE " Line Count      : " C_RESET "N/A\n");
                 }
             }
 
-            printf(C_YELLOW "[•]" C_RESET " Last Modified   : " C_ROSE "%s\n" C_RESET, last_modified);
+            printf(C_YELLOW "[•]" C_RESET C_WHITE " Last Modified   : " C_RESET "%s\n", last_modified);
 
             fclose(file_linse);
             fclose(fp);
@@ -356,7 +363,7 @@ int handle_info(int target)
         }
     }
 
-    print_status("Index not found", 1);
+    print_status("Index not found", STATUS_ERROR);
     fclose(fp);
     return 1;
 }

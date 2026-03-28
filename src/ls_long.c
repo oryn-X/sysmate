@@ -24,28 +24,30 @@ int handle_ls_long(void)
     char Permissions_o[256];
     char Permissions_g[256];
     char Permissions_t[256];
+    const char *type_color;
+    const char *name_color;
 
     struct dirent *dire;
     struct stat st;
 
     if (dir == NULL)
     {
-        print_status("Cannot open directory.", 1);
+        print_status("Cannot open directory.", STATUS_ERROR);
         return 1;
     }
+
     if (getcwd(current_dir, sizeof(current_dir)) == NULL)
     {
-        print_status("Cannot get current directory", 1);
+        print_status("Cannot get current directory", STATUS_ERROR);
         closedir(dir);
         return 1;
     }
 
-    printf("NUM  TYP   OWN     GRP     OTH     FILE NAME\n");
+    printf("NUM   TYP   OWN   GRO   OTH   FILE NAME\n");
 
     while ((dire = readdir(dir)) != NULL)
     {
-        if (
-            strcmp(dire->d_name, ".") == 0 ||
+        if (strcmp(dire->d_name, ".") == 0 ||
             strcmp(dire->d_name, "..") == 0 ||
             strcmp(dire->d_name, ".sysmate_index") == 0)
         {
@@ -54,9 +56,9 @@ int handle_ls_long(void)
 
         snprintf(full_path, sizeof(full_path), "%s/%s", current_dir, dire->d_name);
 
-        if (stat(full_path, &st))
+        if (stat(full_path, &st) != 0)
         {
-            print_status("Cannot get file information", 1);
+            print_status("Cannot get file information", STATUS_ERROR);
             closedir(dir);
             return 1;
         }
@@ -64,34 +66,40 @@ int handle_ls_long(void)
         if (S_ISDIR(st.st_mode))
         {
             strcpy(type, "DIR");
+            type_color = C_WHITE;
+            name_color = C_WHITE;
         }
         else if (S_ISREG(st.st_mode))
         {
             strcpy(type, "FIL");
+            type_color = C_BLUE;
+            name_color = C_BLUE;
         }
         else
         {
-
             strcpy(type, "OTH");
+            type_color = C_ORANGE;
+            name_color = C_ORANGE;
         }
 
-        /*#define S_IRGRP (S_IRUSR >> 3)  Read by group.  */
-        /*#define S_IWGRP (S_IWUSR >> 3)  Write by group.  */
-        /*#define S_IXGRP (S_IXUSR >> 3)  Execute by group.  */
         build_perm_ls_long(st.st_mode, Permissions_o, S_IRUSR, S_IWUSR, S_IXUSR);
         build_perm_ls_long(st.st_mode, Permissions_g, S_IRGRP, S_IWGRP, S_IXGRP);
         build_perm_ls_long(st.st_mode, Permissions_t, S_IROTH, S_IWOTH, S_IXOTH);
 
-        printf(C_YELLOW "[%d]" C_RESET "  " C_CYAN "%-1s" C_RESET "   " C_WHITE "O:" C_RESET "%-3s   " C_WHITE "G:" C_RESET "%-3s   " C_WHITE "T:" C_RESET "%-3s   " C_BLUE "%s\n" C_RESET,
-               index, type, Permissions_o, Permissions_g, Permissions_t, dire->d_name);
+        printf(C_YELLOW "[%02d]" C_RESET "  "
+                        "%s%-3s" C_RESET "   " C_WHITE "%-3s" C_RESET "   " C_WHITE "%-3s" C_RESET "   " C_WHITE "%-3s" C_RESET "   "
+                        "%s%s" C_RESET "\n",
+               index,
+               type_color, type,
+               Permissions_o,
+               Permissions_g,
+               Permissions_t,
+               name_color, dire->d_name);
+
         index++;
     }
 
-
-    printf(C_DARK_GREEN "Note:" C_WHITE " To view detailed file information, use: sysmate info <number> " C_BPURPLE "\n" C_RESET);
-
-
-    closedir(dir); 
+    closedir(dir);
     return 0;
 }
 
@@ -115,7 +123,6 @@ void build_perm_ls_long(int mode, char *permissions_text, int read_flag, int wri
     {
         strcat(permissions_text, "-");
     }
-
     if (mode & write_flag)
     {
         if (permissions_text[0] == '\0')
@@ -131,7 +138,6 @@ void build_perm_ls_long(int mode, char *permissions_text, int read_flag, int wri
     {
         strcat(permissions_text, "-");
     }
-
     if (mode & exec_flag)
     {
         if (permissions_text[0] == '\0')
@@ -140,7 +146,6 @@ void build_perm_ls_long(int mode, char *permissions_text, int read_flag, int wri
         }
         else
         {
-
             strcat(permissions_text, C_SKY "x" C_RESET);
         }
     }
@@ -148,7 +153,6 @@ void build_perm_ls_long(int mode, char *permissions_text, int read_flag, int wri
     {
         strcat(permissions_text, "-");
     }
-
     if (permissions_text[0] == '\0')
     {
         strcpy(permissions_text, C_GRAY "---" C_RESET);

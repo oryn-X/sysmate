@@ -18,19 +18,19 @@ void print_mode(const char *mode)
 /* Print a status line using the requested message style. */
 void print_status(const char *status, int is_error)
 {
-    if (is_error == 0)
+    if (is_error == STATUS_OK)
     {
         printf(C_GREEN "[OK] %s\n" C_RESET, status);
     }
-    else if (is_error == 1)
+    else if (is_error == STATUS_ERROR)
     {
         printf(C_RED "[ERROR] %s\n" C_RESET, status);
     }
-    else if (is_error == 2)
+    else if (is_error == STATUS_INFO)
     {
         printf(C_GREEN "[INFO] %s\n" C_RESET, status);
     }
-    else if (is_error == 3)
+    else if (is_error == STATUS_PLAIN)
     {
         printf(" %s\n", status);
     }

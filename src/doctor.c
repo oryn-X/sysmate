@@ -17,7 +17,7 @@ int handle_doctor_dev(void)
 
     doctor_init();
     print_mode("doctor-dev  ");
-    print_status("Checking development tools...", 0);
+    print_status("Checking development tools...", STATUS_OK);
     printf("──────────────────────────────────\n");
 
     /* Check the core build, version control, and scripting tools used in local dev setups. */
@@ -37,7 +37,7 @@ int handle_doctor_web(void)
     doctor_init();
     print_mode("doctor-dev  ");
     printf("\n");
-    print_status("Checking development tools...", 0);
+    print_status("Checking development tools...", STATUS_OK);
     printf("──────────────────────────────────\n");
 
     /* Check the runtime, package, networking, and container tools used for web work. */
@@ -58,7 +58,7 @@ int run_doctor(const char *msg, const char *cmd, const char *package)
     if (result != 0)
     {
         printf("[ " C_RED "FAIL" C_RESET " ] ");
-        print_status(msg, 1);
+        print_status(msg, STATUS_ERROR);
         if (doctor_missing_packages[0] == '\0')
         {
             strcpy(doctor_missing_packages, package);
@@ -75,7 +75,7 @@ int run_doctor(const char *msg, const char *cmd, const char *package)
     else
     {
         printf("[ " C_GREEN "PASS" C_RESET " ] ");
-        print_status(msg, 3);
+        print_status(msg, STATUS_PLAIN);
         doctor_pass++;
     }
 
@@ -112,7 +112,7 @@ int doctor_print_summary()
 
         if (fgets(ny, sizeof(ny), stdin) == NULL)
         {
-            print_status("Input error", 1);
+            print_status("Input error", STATUS_ERROR);
             return 1;
         }
 
@@ -135,7 +135,7 @@ int doctor_print_summary()
         }
         else
         {
-            print_status("Enter a valid choice Y or N", 1);
+            print_status("Enter a valid choice Y or N", STATUS_ERROR);
             return 1;
         }
     }

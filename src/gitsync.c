@@ -14,12 +14,12 @@ int handle_gitsync(const char *message)
 
     if (message == NULL)
     {
-        print_status("Missing commit message", 1);
+        print_status("Missing commit message", STATUS_ERROR);
         return 1;
     }
     else if (message[0] == '\0')
     {
-        print_status("Empty commit message", 1);
+        print_status("Empty commit message", STATUS_ERROR);
         return 1;
     }
     else
@@ -51,7 +51,7 @@ int handle_gitsync(const char *message)
             return 1;
         }
 
-        print_status("Git sync completed successfully", 0);
+        print_status("Git sync completed successfully", STATUS_OK);
         return 0;
     }
 
