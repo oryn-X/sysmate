@@ -98,6 +98,7 @@ int handle_ls_long(void)
 
         index++;
     }
+    printf(C_DARK_GREEN "Note:" C_WHITE " To view detailed file information, use: sysmate info <number> " C_BPURPLE "\n" C_RESET);
 
     closedir(dir);
     return 0;
