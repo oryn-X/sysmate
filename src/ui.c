@@ -1,42 +1,44 @@
 #include <stdio.h>
 #include "ui.h"
 
-/* Show basic usage instructions */
+/* Print the short command usage summary. */
 void print_usage(void)
 {
-    printf(C_CYAN"Try:\n"C_RESET);
+    printf(C_CYAN "Try:\n" C_RESET);
     printf("  sysmate help or sysmate -h\n");
     printf("  sysmate version or sysmate -v\n");
 }
 
-/* Print current mode (e.g., ls, clean) */
+/* Print the active command mode banner. */
 void print_mode(const char *mode)
 {
-    printf(C_BPURPLE "[OK] Mode: %s\n" C_RESET, mode);
+    printf(C_CYAN "[MODE] %s\n" C_RESET, mode);
 }
 
-/* Print status message (success or error) */
+/* Print a status line using the requested message style. */
 void print_status(const char *status, int is_error)
-{ 
-    if (is_error == 0)
+{
+    if (is_error == STATUS_OK)
     {
-        /* Success message */
-        printf(C_GREEN "%s\n" C_RESET, status);
+        printf(C_GREEN "[OK] %s\n" C_RESET, status);
     }
-    else if (is_error == 1)
+    else if (is_error == STATUS_ERROR)
     {
-        /* Error message */
-        printf(C_RED "%s\n" C_RESET, status);
+        printf(C_RED "[ERROR] %s\n" C_RESET, status);
     }
-    else if (is_error == 2)
+    else if (is_error == STATUS_INFO)
     {
-        printf( "%s\n", status);
+        printf(C_GREEN "[INFO] %s\n" C_RESET, status);
+    }
+    else if (is_error == STATUS_PLAIN)
+    {
+        printf(" %s\n", status);
     }
 }
 
-/* Handle unknown command input */
+/* Report an unknown command and show the usage hint. */
 void print_unknown_command(const char *com)
 {
-    printf("Unknown command:"C_RED " %s\n"C_RESET, com);
+    printf("Unknown command:" C_RED " %s\n" C_RESET, com);
     print_usage();
 }

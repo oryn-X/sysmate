@@ -1,23 +1,48 @@
 #ifndef SYSTEM_OPS_H
 #define SYSTEM_OPS_H
+#define MAX_LEN 300
+
+
+
 
 /* Update and upgrade the system */
 int handle_update(void);
 
 /* Clean unused packages and cache */
 int handle_clean(void);
+int run_info (const char *msg, const char *cmd);
+int run_system(const char *msg, const char *cmd);
+
+
 
 /* List files and create index file */
-int handle_ls(void);
-
 /* Delete file by index */
+int handle_ls(int show_output);
 int handle_delete(int target);
+int handle_info(int target);
+void build_permissions(int mode,char *permissions_text, int read_flag, int write_flag, int exec_flag);
+
+
+
 
 /* Run in CMD */
 int handle_doctor_dev(void);
-int run_system(const char *msg, const char *cmd);
+int handle_doctor_web(void);
 int run_doctor(const char *msg, const char *cmd,const char *package);
-int run_info (const char *msg, const char *cmd);
+void doctor_init(void);
+int doctor_print_summary();
+
+
+
+int handle_gitsync(const char *msg);
+
+
+
+
+
+int handle_ls_long(void);
+void build_perm_ls_long(int mode, char *permissions_text, int read_flag, int write_flag, int exec_flag);
+
 
 
 #endif
