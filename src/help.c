@@ -67,7 +67,7 @@ int print_help(void)
     printf("     sysmate ls-l\n");
     printf("     sysmate delete 3\n");
     printf("     sysmate info 3\n");
-    printf("     sysmate doctor-dev\n");
+    printf("     sysmate doctor-dev\n"); 
     printf("     sysmate gitsync \"update readme\"\n\n" C_RESET);
 
     /* Notes */
