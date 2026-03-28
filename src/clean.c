@@ -5,7 +5,7 @@
 #include "ui.h"
 
 /* Run the cleanup workflow for packages, logs, and caches. */
-int handle_clean(void)
+int handle_clean(void) 
 {
     print_mode("clean");
     int clean_failed = 0;

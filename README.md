@@ -100,7 +100,7 @@ sysmate doctor-dev
 ```blocks
 make uninstall-user
 ```
-
+ 
 ## Notes
 
 ```text

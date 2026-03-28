@@ -17,7 +17,7 @@ build/%.o: src/%.c | build
 
 $(TARGET): $(OBJ)
 	$(CC) $(OBJ) -o $@
-
+ 
 run: $(TARGET)
 	./$(TARGET)
 

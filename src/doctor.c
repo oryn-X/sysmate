@@ -4,7 +4,7 @@
 
 #include "system_ops.h"
 #include "ui.h"
-
+ 
 char command[MAX_LEN];
 int doctor_total;
 int doctor_pass;

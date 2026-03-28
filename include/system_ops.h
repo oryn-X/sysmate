@@ -46,4 +46,4 @@ void build_perm_ls_long(int mode, char *permissions_text, int read_flag, int wri
 
 
 #endif
- 
+  

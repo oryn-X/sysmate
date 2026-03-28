@@ -4,7 +4,7 @@
 
 #include "system_ops.h"
 #include "ui.h"
-
+ 
 /* Stage, commit, rebase, and push the current repository. */
 int handle_gitsync(const char *message)
 {

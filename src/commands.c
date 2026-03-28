@@ -32,7 +32,7 @@ int execute_command(int argc, char *argv[])
     {
         if (argc != 2)
         {
-            print_status("Usage: sysmate clean", STATUS_ERROR);
+             print_status("Usage: sysmate clean", STATUS_ERROR);
             return 1;
         }
         return handle_clean();

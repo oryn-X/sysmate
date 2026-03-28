@@ -47,7 +47,7 @@
 #define STATUS_TIP      5
 
 
-
+ 
 /* Print basic usage instructions */
 void print_usage(void);
 

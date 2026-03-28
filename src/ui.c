@@ -8,13 +8,13 @@ void print_usage(void)
     printf("  sysmate help or sysmate -h\n");
     printf("  sysmate version or sysmate -v\n");
 }
-
+ 
 /* Print the active command mode banner. */
 void print_mode(const char *mode)
 {
     printf(C_CYAN "[MODE] %s\n" C_RESET, mode);
 }
-
+ 
 /* Print a status line using the requested message style. */
 void print_status(const char *status, int is_error)
 {
