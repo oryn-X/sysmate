@@ -17,16 +17,16 @@ int handle_doctor_dev(void)
 
     doctor_init();
     print_mode("doctor-dev  ");
-    print_status("Checking development tools...", STATUS_OK);
+    print_status("Checking basic system tools...", STATUS_OK);
     printf("──────────────────────────────────\n");
 
     /* Check the core build, version control, and scripting tools used in local dev setups. */
-    run_doctor("gcc        : C compiler", "which gcc > /dev/null 2>&1", "gcc");
+    run_doctor("gcc        : compiler tool", "which gcc > /dev/null 2>&1", "gcc");
     run_doctor("g++        : C++ compiler", "which g++ > /dev/null 2>&1", "g++");
-    run_doctor("make       : build system", "which make > /dev/null 2>&1", "make");
+    run_doctor("make       : build tool", "which make > /dev/null 2>&1", "make");
     run_doctor("git        : version control", "which git > /dev/null 2>&1", "git");
-    run_doctor("python3    : scripting", "which python3 > /dev/null 2>&1", "python3");
-    run_doctor("pip3       : python packages", "which pip3 > /dev/null 2>&1", "python3-pip");
+    run_doctor("python3    : scripting language", "which python3 > /dev/null 2>&1", "python3");
+    run_doctor("pip3       : Python package manager", "which pip3 > /dev/null 2>&1", "python3-pip");
     return doctor_print_summary();
 }
 
@@ -126,7 +126,7 @@ int doctor_print_summary()
                 return 1;
             }
 
-            printf(C_YELLOW "Done installation [ %s ]\n" C_RESET, doctor_missing_packages);
+            printf(C_YELLOW "Installed missing packages [ %s ]\n" C_RESET, doctor_missing_packages);
             return 0;
         }
         else if (ny[0] == 'n' || ny[0] == 'N')
