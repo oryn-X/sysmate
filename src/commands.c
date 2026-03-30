@@ -97,25 +97,15 @@ int execute_command(int argc, char *argv[])
     }
 
     /* Doctor commands */
-    else if (strcmp(command, "doctor-dev") == 0 || strcmp(command, "-dd") == 0)
+    else if (strcmp(command, "doctor") == 0 || strcmp(command, "-dr") == 0)
     {
         if (argc != 2)
         {
             print_status("Usage: sysmate doctor-dev", STATUS_ERROR);
             return 1;
         }
-        return handle_doctor_dev();
+        return handle_doctor();
     }
-    else if (strcmp(command, "doctor-web") == 0 || strcmp(command, "-dw") == 0)
-    {
-        if (argc != 2)
-        {
-            print_status("Usage: sysmate doctor-web", STATUS_ERROR);
-            return 1;
-        }
-        return handle_doctor_web();
-    }
-
     /* Git commands */
     else if (strcmp(command, "gitsync") == 0 || strcmp(command, "-gs") == 0)
     {
@@ -146,8 +136,20 @@ int execute_command(int argc, char *argv[])
         }
         return version();
     }
+    else if ( strcmp(command, "-j") == 0)
+    {
+        if (argc != 2)
+        {
+            print_status("Usage: sysmate version", STATUS_ERROR);
+            return 1;
+        }
+
+        
+        
+
+        return 0;
+    }
 
     print_unknown_command(argv[1]);
     return 1;
 }
- 

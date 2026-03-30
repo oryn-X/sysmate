@@ -29,6 +29,7 @@ int handle_ls(int show_output)
     if (dir == NULL)
     {
         print_status("Cannot open directory.", STATUS_ERROR);
+
         return 1;
     }
     else if (fp == NULL)
@@ -41,9 +42,7 @@ int handle_ls(int show_output)
     /* Skip bookkeeping entries and mirror the displayed list into .sysmate_index. */
     while ((entry = readdir(dir)) != NULL)
     {
-        if (strcmp(entry->d_name, ".") == 0 ||
-            strcmp(entry->d_name, "..") == 0 ||
-            strcmp(entry->d_name, ".sysmate_index") == 0)
+        if (*(entry->d_name) == '.')
         {
             continue;
         }
@@ -260,7 +259,7 @@ int handle_info(int target)
                 return 1;
             }
 
-            printf(C_YELLOW "[•]" C_RESET C_WHITE" Name            : " C_RESET "%s\n", file_name);
+            printf(C_YELLOW "[•]" C_RESET C_WHITE " Name            : " C_RESET "%s\n", file_name);
             printf(C_YELLOW "[•]" C_RESET " " C_WHITE "Path"
                             "            : " C_RESET C_CYAN "%s\n" C_RESET,
                    full_path);

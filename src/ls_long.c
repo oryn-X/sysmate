@@ -45,11 +45,10 @@ int handle_ls_long(void)
 
     printf("NUM   TYP   OWN   GRO   OTH   FILE NAME\n");
 
+    
     while ((dire = readdir(dir)) != NULL)
     {
-        if (strcmp(dire->d_name, ".") == 0 ||
-            strcmp(dire->d_name, "..") == 0 ||
-            strcmp(dire->d_name, ".sysmate_index") == 0)
+        if (*(dire->d_name) ==  '.')
         {
             continue;
         }
