@@ -22,7 +22,7 @@ void print_status(const char *status, int is_error)
     {
         printf(C_GREEN "[OK] %s\n" C_RESET, status);
     }
-    else if (is_error == STATUS_ERROR)
+    else if (is_error == STATUS_ERROR)  
     {
         printf(C_RED "[ERROR] %s\n" C_RESET, status);
     }
