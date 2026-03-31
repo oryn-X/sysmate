@@ -12,7 +12,7 @@ int doctor_missing;
 char doctor_missing_packages[2024];
 
 /* Check common native development tools. */
-int handle_doctor(void)
+int handle_doctor(void)         
 {
 
     doctor_init();
@@ -35,12 +35,12 @@ int handle_doctor(void)
 /* Run one doctor check and update the summary counters. */
 int run_doctor(const char *msg, const char *cmd, const char *package)
 {
-    doctor_total++;
+    doctor_total++;     
     int result = system(cmd);
     if (result != 0)
     {
         printf("[ " C_RED "FAIL" C_RESET " ] ");
-        print_status(msg, STATUS_ERROR);
+        print_status(msg, STATUS_PLAIN);
         if (doctor_missing_packages[0] == '\0')
         {
             strcpy(doctor_missing_packages, package);
@@ -48,7 +48,7 @@ int run_doctor(const char *msg, const char *cmd, const char *package)
         else
         {
             strcat(doctor_missing_packages, " ");
-            strcat(doctor_missing_packages, package);
+            strcat(doctor_missing_packages, package);   
         }
 
         doctor_missing++;

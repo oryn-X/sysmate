@@ -41,7 +41,7 @@ int print_help(void)
     printf("     " C_CYAN "ls-l            " C_RESET "→ Long file list with type and permissions\n");
     printf("     " C_CYAN "delete <index>  " C_RESET "→ Delete a file by index\n");
     printf("     " C_CYAN "info <index>    " C_RESET "→ Show detailed information about a file\n");
-    printf("     " C_CYAN "doctor-dev      " C_RESET "→ Check development tools and environment\n");
+    printf("     " C_CYAN "doctor          " C_RESET "→ Check development tools and environment\n");
     printf("     " C_CYAN "gitsync <msg>   " C_RESET "→ Add, commit, pull, and push changes\n");
     printf("     " C_CYAN "help            " C_RESET "→ Show this help screen\n");
     printf("     " C_CYAN "version         " C_RESET "→ Show current version\n\n");
