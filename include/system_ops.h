@@ -26,8 +26,7 @@ void build_permissions(int mode,char *permissions_text, int read_flag, int write
 
 
 /* Run in CMD */
-int handle_doctor_dev(void);
-int handle_doctor_web(void);
+int handle_doctor(void);
 int run_doctor(const char *msg, const char *cmd,const char *package);
 void doctor_init(void);
 int doctor_print_summary();
